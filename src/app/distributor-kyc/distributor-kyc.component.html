@@ -1,0 +1,59 @@
+<div class="p-container">
+    <div class="showForm">
+
+        <div class="header-row" style="display: flex;">
+            <div class="title"><img class="backBtn" [routerLink]="['/distributors']" src="../../assets/keyboard_backspace-24px (1).png" /> Upload  KYC Documents</div>
+        </div>
+        <div class="page-content">
+            <div class="content">
+                <div class="saleForm">
+                    <div class="row form-group">
+                        <div class="col-6">
+                            <label>DISTRIBUTOR ID#<span class="star">*</span></label>
+                            <input type="text" class="form-control" [value]="currentId" disabled>
+                        </div>
+                    </div>
+                    <h3>Upload Documents</h3>
+                    <p>List of Accepted Files are JPEG/JPG/PNG/PDF, Maximum File Size is 2 MB</p>
+                    <ul class="upload-list">
+                        <li (click)="selectFiles('PAN_CARD')" *ngIf="!isPanCard">
+                            <img src="../../assets/upload-icon.png" />
+                            <span>PAN CARD</span>
+                        </li>
+                        <li *ngIf="isPanCard">
+                            <!-- {{imagePan}} -->
+                            <img [src]="imagePan" style="max-height:150px;max-width: 100%;" />
+                        </li>
+                        <li (click)="selectFiles('RESIDENTIAL_PROOF_FRONT')" *ngIf="!isResidentialFront">
+                            <img src="../../assets/upload-icon.png" />
+                            <span>RESIDENTIAL PROOF FRONT</span>
+                        </li>
+                        <li *ngIf="isResidentialFront">
+                            <img [src]="imageResidentialFront" style="max-height:150px;max-width: 100%;" />
+                        </li>
+                        <li (click)="selectFiles('RESIDENTIAL_PROOF_BACK')" *ngIf="!isResidentialBack">
+                            <img src="../../assets/upload-icon.png" />
+                            <span>RESIDENTIAL PROOF BACK</span>
+                        </li>
+                        <li *ngIf="isResidentialBack">
+                            <img [src]="imageResidentialBack" style="max-height:150px;max-width: 100%;" />
+                        </li>
+                        <li (click)="selectFiles('CANCELLED_CHEQUE')" *ngIf="!isCancelledCheque">
+                            <img src="../../assets/upload-icon.png" />
+                            <span>CANCELLED CHEQUE/PASSBOOK</span>
+                        </li>
+                        <li *ngIf="isCancelledCheque">
+                            <img [src]="imageCancelledCheque" style="max-height:150px;max-width: 100%;" />
+                        </li>
+                    </ul>
+                    <input type="file" #fileInput style="width: 100%;visibility: hidden; height: 0px;" accept="image/gif, image/jpeg, image/png, application/pdf" (change)="uploadFile()" />
+                    <p><strong>Note:</strong> In case you are uploading .JPEG/.JPG/.PNG, please ensure it is uploaded with  appropriate lighting and minimum blur</p>
+                </div>
+                <div class="footer-right mt-2">
+                    <button type="button" class="btn btn-outline-secondary mr-2 close-btn" [routerLink]="['/distributors']">Cancel</button>
+                    <button type="button" class="btn btn-save" (click)="updateKyc()"><span>Upload and Save Documents</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

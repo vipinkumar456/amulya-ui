@@ -1,0 +1,230 @@
+<div class="p-container">
+    <div class="showForm">
+
+        <div class="header-row" style="display: flex;">
+            <div class="title"><img class="backBtn" [routerLink]="['/distributors']" src="../../assets/keyboard_backspace-24px (1).png" /> Edit Distributor</div>
+        </div>
+        <div class="page-content">
+            <!-- sale form -->
+            <div class="content">
+                <div class="form">
+                    <form [formGroup]="distRegForm">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+                        <ngb-panel title="Distributor Information">
+                          <ng-template ngbPanelContent>
+                            <div class="saleForm">
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>SPONSOR ID#<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="sponsorId" [ngClass]="{ 'is-invalid': submitted && f.sponsorId.errors }">
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.sponsorId" label="Sponsor ID"></div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>USER NAME<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="userName" [ngClass]="{ 'is-invalid': submitted && f.userName.errors }">
+                                    </div>
+                                    <div class="col-6">
+                                        <label>FATHER'S NAME</label>
+                                        <input type="text" class="form-control" formControlName="fatherName">
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>DATE OF BIRTH</label>
+                                        <div class="input-group">
+                                            <input placeholder="Select" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control" [readonly]="(currentId!=null&&(type=='receive'||type=='view'))?true:null" formControlName="dateOfBirth" id="dateOfBirth">
+                                            <div class="input-group-append" [owlDateTimeTrigger]="dt1" [disabled]="type=='view'">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    <img src="./assets/date_range-24px (1).png">
+                                                </span>
+    
+                                            </div>
+                                        </div>
+                                        <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+                                        <!-- <input type="text" class="form-control" formControlName="dateOfBirth"> -->
+                                    </div>
+                                    <div class="col-6">
+                                        <label>GENDER</label>
+                                        <!-- <input type="text" class="form-control" formControlName="gender"> -->
+                                        <div class="radiobtn-cont">
+                                            <div class="form-check">
+                                                <input class="form-check-input" id="male" type="radio" value="MALE" name="gender" formControlName="gender"><label class="form-check-label" for="male">Male</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" id="female" type="radio" value="FEMALE" name="gender" formControlName="gender"><label class="form-check-label" for="female">Female</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" id="female" type="radio" value="FEMALE" name="gender" formControlName="gender"><label class="form-check-label" for="others">Others</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>EMAIL<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.email" label="Email"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>MOBILE<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="phoneNumber" [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors }">
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.phoneNumber" label="Phone Number"></div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>PIN CODE<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="pinCode" (change)="pincode($event.target)" [ngClass]="{ 'is-invalid': submitted && f.pinCode.errors }">
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.pinCode" label="PIN Code"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>STATE</label>
+                                        <input type="text" class="form-control" formControlName="state" disabled>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>CITY</label>
+                                        <input type="text" class="form-control" formControlName="city" disabled>
+                                        <!-- <select class="form-control" id="state" formControlName="state" #stateselect (change)="onStateSelect()" [ngClass]="{ 'is-invalid': submitted && f.state.errors }">
+                                            <option *ngFor="let state of states; let i = index" [value]="state">
+                                                {{state}}
+                                            </option>
+                                        </select>
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.state" label="State"></div> -->
+                                    </div>
+                                    <div class="col-6">
+                                        <label>DISTRICT</label>
+                                        <input type="text" class="form-control" formControlName="district" disabled>
+                                        <!-- <select class="form-control" id="city" formControlName="city" #cityselect>
+                                            <option *ngFor="let city of cities; let i = index" [value]="city">
+                                                {{city}}
+                                            </option>
+                                        </select>
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.city" label="City"></div> -->
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>TEHSIL</label>
+                                        <input type="text" class="form-control" formControlName="tehsil">
+                                    </div>
+                                    <div class="col-6">
+                                        <label>ADDRESS<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="address" [ngClass]="{ 'is-invalid': submitted && f.address.errors }">
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.address" label="Address"></div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                          </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
+                          <ng-template ngbPanelTitle>
+                            <span>Bank Information</span>
+                          </ng-template>
+                          <ng-template ngbPanelContent>
+                            <div class="saleForm">
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>BANK NAME<span class="star">*</span></label>
+                                        <select class="form-control" id="placement" formControlName="bankName" (change)="getIfscCodeList()" [ngClass]="{ 'is-invalid': submitted && f.bankName.errors }">
+                                            <option value="">Select Bank</option>
+                                            <option *ngFor="let bank of bankList" [value]="bank">{{bank}}</option>
+                                        </select>
+                                        <!-- <input type="text" class="form-control" formControlName="bankName" [ngClass]="{ 'is-invalid': submitted && f.bankName.errors }"> -->
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.bankName" label="Bank Name"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>IFSC CODE<span class="star">*</span></label>
+                                        <ng-select [items]="IfscCodeList" required formControlName="ifscCode" (change)="getBranchDetails()" bindValue="ifscCode" class="browser-default custom-select labelSelect" [virtualScroll]="true" bindLabel="itemNumber"
+                                                                     placeholder="Select IFSC Code" appendTo="body">
+                                            <ng-template ng-header-tmp></ng-template>
+                                            <ng-template ng-option-tmp let-ifsc="item" let-index="index">
+                                                <div>{{ifsc}}</div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <!-- <input type="text" class="form-control" formControlName="ifscCode" [ngClass]="{ 'is-invalid': submitted && f.ifscCode.errors }"> -->
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.ifscCode" label="IFSC Code"></div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>BRANCH NAME<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="branchName" [ngClass]="{ 'is-invalid': submitted && f.branchName.errors }">
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.branchName" label="Branch Name"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>ACCOUNT HOLDER NAME<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="accountHolderName" [ngClass]="{ 'is-invalid': submitted && f.accountHolderName.errors }">
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.accountHolderName" label="Account HolderName"></div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>ACCOUNT NO.<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="accountNumber" [ngClass]="{ 'is-invalid': submitted && f.accountNumber.errors }" onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false">
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.accountNumber" label="Account Number"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>CONFIRM ACCOUNT NO.<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="confirmAccountNumber" [ngClass]="{ 'is-invalid': submitted && f.confirmAccountNumber.errors }" onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false">
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.confirmAccountNumber" label="Confirm Account Number"></div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>PAN No.<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="pan" [ngClass]="{ 'is-invalid': submitted && f.pan.errors }" maxlength="10">
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.pan" label="PAN"></div>
+                                    </div>
+                                </div>
+                            </div>
+                          </ng-template>
+                        </ngb-panel>
+                        <ngb-panel title="Nominee Information">
+                            <ng-template ngbPanelContent>
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <label>NOMINEE NAME<span class="star">*</span></label>
+                                        <input type="text" class="form-control" formControlName="nomineeName" [ngClass]="{ 'is-invalid': submitted && f.nomineeName.errors }">
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.nomineeName" label="Nominee Name"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>RELATION<span class="star">*</span></label>
+                                        <select class="form-control" id="relation" formControlName="nomineeRelation" #relation>
+                                            <option *ngFor="let relation of distRelationship; let i = index" [value]="relation">
+                                                {{relation}}
+                                            </option>
+                                        </select>
+                                        <!-- <input type="text" class="form-control" formControlName="nomineeRelation" [ngClass]="{ 'is-invalid': submitted && f.nomineeRelation.errors }"> -->
+                                        <div app-errors class="text-danger" [submit]="submitted" [control]="f.nomineeRelation" label="Nominee Relation"></div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                        <ngb-panel title="Documents Download" *ngIf="this.distributor.documents">
+                            <ng-template ngbPanelContent>
+                                <div class="saleForm">
+                                    <ul class="download-list">
+                                        <li *ngFor="let doc of this.distributor.documents">
+                                            <span class="label">{{doc.documentTypeName}}</span> <button class="btn-download" (click)="downloadDocs(doc.file)">Download</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                      </ngb-accordion>
+                      <div class="footer-right mt-2">
+                        <button type="button" class="btn btn-outline-secondary mr-2 close-btn" [routerLink]="['/distributors']">Cancel</button>
+                        <button *ngIf="distributor.distributorStatus!='KYC_APPROVED'" type="button" class="btn btn-save" (click)="saveDistributor()"><span>Save Information</span></button>
+                      </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

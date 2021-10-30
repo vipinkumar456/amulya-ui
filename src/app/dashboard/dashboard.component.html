@@ -1,0 +1,92 @@
+<div class="dashboard-container">
+    <div class="overlay-dash">Coming Soon...</div>
+    <div class="header-row">
+        <div class="title">Dashboard</div>
+    </div>
+    <div class="page-content">
+        <div class="card card-top">
+            <div class="left">
+                <button type="button" class="btn current-btn"> <span>Current Month</span> <img
+                        src="../../assets/keyboard_arrow_down-24p.png" /></button>
+                <div class="grandTotal">₹1,763,28,1</div>
+                <div class="total-text">Total sales last month</div>
+                <div class="projected-sales">
+                    <div class="num">+12.39% <img style="vertical-align: super;width: 16px;height: 16px;"
+                            src="../../assets/arrow_circle_up-18dp.png"></div>
+                    <div class="proj-text">Projected Sales</div>
+                </div>
+                <div class="disclaimer">Projection is a computer based data.
+                    The value might not be accurate
+                </div>
+            </div>
+            <div class="map">
+                <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [legend]="legend"
+                    [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis"
+                    [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="multi"
+                    (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+                </ngx-charts-line-chart>
+            </div>
+        </div>
+        <div class="card card-middle">
+            <div class="c-title Tborder">
+                Top 5 Selling Products
+            </div>
+            <div class="warning">
+                <img style="height: 40px;width: 40px;" src="../../assets/Alert.png" />
+                <div class="text">Some of the Items sell fast. Please check and arrange replenishemnt.</div>
+                <button type="button" class="btn inv-btn"> Check Inventory</button>
+            </div>
+            <div class="prod-container">
+                <div class="products" *ngFor="let product of products">
+                    <div class="image">
+                        <img class="prodImage" [src]="product.src" />
+                    </div>
+                    <div class="text">
+                        <div class="prod-name">{{product.name}}</div>
+                        <div class="numbers"><span class="sold">sold: </span>{{product.number}} nos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-con-btm">
+            <div class="card card-btm sales">
+                <div class="header">
+                    <div class="c-title">
+                        Sales By Region
+                    </div>
+                    <button type="button" class="btn btn-transp"><img style="height: 15px;width: 15px;"
+                            src="../../assets/date_range-24px (1).png" /><span>Current Month</span><img
+                            src="../../assets/icon-right.png"
+                            style="height: 16px;width: 16px;transform: rotate(90deg);" /></button>
+                </div>
+                <div class="locations" *ngFor="let region of regions">
+                    <div class="location-name">{{region.name}}</div>
+                    <div class="gross" [class]="region.type"><img class="gain"
+                            src="../../assets/arrow_circle_up-18dp.png" /> <img class="loss"
+                            src="../../assets/arrow_circle_down-18dp.png" /> ₹{{region.value}}</div>
+                </div>
+            </div>
+            <div class="card card-btm top5">
+                <div class="c-title">Top 5 Distributor By Sales</div>
+                <div class="dist-list" *ngFor="let dist of distributors">
+                    <div class="name">{{dist.name}}</div>
+                    <div class="value">₹{{dist.value}}</div>
+                </div>
+            </div>
+            <div class="card card-btm distributors">
+                <div class="c-title">Distributors</div>
+                <div class="total" style="margin-bottom: 30px;">
+                    <div class="value">6,123</div>
+                    <div class="total">Total Distributors</div>
+                </div>
+                <div class="total">
+                    <div class="value">123</div>
+                    <div class="total">
+                        <div style="font-size: 16px;height: 19px;">New Distributors</div>
+                        <div style="font-size: 12px;height: 15px; margin-top: 2px;">Current Month</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

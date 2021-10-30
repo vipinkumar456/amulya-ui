@@ -1,0 +1,149 @@
+<div class="p-container">
+    <div class="header-row">
+        <div class="title">Stock On Hand</div>
+    </div>
+    <div class="showForm">
+        <div class="page-content">
+            <!-- purchase form -->
+            <div class="content">
+                <div class="form">
+                    <form #f="ngForm">
+                        <div class="purchaseForm">
+
+                            <div class="row">
+
+                                <div class="form-group col-6">
+                                    <label for="city">WAREHOUSE</label>
+                                    <select class="form-control" name="location" [(ngModel)]="filter.location">
+                                        <option *ngFor="let warehouse of warehouses; let i = index" [value]="warehouse">
+                                            {{warehouse}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="city">PRODUCT</label>
+                                    <ng-select [items]="productList" name="product" [(ngModel)]="filter.product" bindValue="itemNumber" class="browser-default custom-select labelSelect" style="max-width:100%" [virtualScroll]="true" bindLabel="fullName" placeholder="Select Product" appendTo="body">
+                                        <ng-template ng-header-tmp>
+
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-product="item" let-search="searchTerm" let-index="index">
+                                            <div>{{product.itemNumber}} - {{product.itemName}} </div>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="text-right">
+                            <button type="button" style="display: initial;" class="btn btn-save" #viewBtn [disabled]="f.form.invalid" (click)="viewOnHand()">
+                                <span>View Availablility</span></button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="showForm mt-2 page-content">
+        <table class="table list-table">
+            <thead>
+                <tr>
+
+                    <th *ngFor="let head of headers">{{head.title}}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let inventory of inventoryList">
+                    <tr>
+
+                        <td *ngFor="let head of headers">
+                            {{inventory[head.name]}}
+                        </td>
+                        <td>
+                            <img class="more-btn" src="../../assets/more_vert-24px @2x.png" *ngIf="!inventory.subInventory" (click)="firstLevel(inventory)">
+                        </td>
+                    </tr>
+                    <tr *ngIf="inventory.branchDetails">
+                        <td colspan="7" style="background:rgb(233, 233, 255);">
+                            <table class="table list-table">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let head of firstLevelHeader">{{head.title}}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let branch of inventory.branchDetails">
+                                        <tr>
+                                            <ng-container *ngFor="let head of firstLevelHeader">
+                                                <td>{{branch[head.name] }}</td>
+                                            </ng-container>
+                                            <td>
+                                                <img class="more-btn" src="../../assets/more_vert-24px @2x.png" *ngIf="!inventory.subInventory" (click)="expand(branch)">
+                                                <img src="../../assets/close-24px (2)@2x.png" height="20" *ngIf="inventory.subInventory" (click)="inventory.subInventory=null">
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="branch.subInventory">
+                                            <td colspan="7">
+                                                <table class="table list-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th *ngFor="let head of subHeaders">{{head.title}}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let sub of branch.subInventory">
+                                                            <ng-container *ngFor="let head of subHeaders">
+                                                                <td *ngIf="head.name != 'expiryDate'">{{sub[head.name] }}</td>
+                                                                <td *ngIf="head.name == 'expiryDate'">{{sub[head.name] | date:"dd/MM/yyyy" }}</td>
+                                                            </ng-container>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- <tr *ngIf="inventory.subInventory">
+                        <td colspan="7">
+                            <table class="table list-table" style="width: 80%;float: right;">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let head of subHeaders">{{head.title}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let sub of inventory.subInventory">
+                                        <ng-container *ngFor="let head of subHeaders">
+                                            <td *ngIf="head.name != 'expiryDate'">{{sub[head.name] }}</td>
+                                            <td *ngIf="head.name == 'expiryDate'">{{sub[head.name] | date:"dd/MM/yyyy" }}</td>
+                                        </ng-container>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr> -->
+                </ng-container>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between p-2 prodList-pagination" *ngIf="this.collectionSize > this.pageSize">
+            <!-- <div class="backToTop" (click)="scrollToTop(pageTop)">Back to Top</div> -->
+            <div class="pagi">
+                <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="4" [pageSize]="pageSize" (pageChange)="refreshPages()"> </ngb-pagination>
+            </div>
+            <div class="pagesize">
+                <div for="pagesize list-label">Items per page</div>
+                <select class="form-control" id="pagesize" [(ngModel)]="pageSize" (change)="updatePageSize()" #pageSelect>
+                    <option [value]="10">10</option>
+                    <option [value]="25">25</option>
+                    <option [value]="50">50</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

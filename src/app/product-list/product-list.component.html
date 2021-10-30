@@ -1,0 +1,559 @@
+<div class="p-container" #pageTop>
+    <div class="header-row" *ngIf="!showList&& !viewProduct">
+        <div class="title">Product</div>
+        <div>
+            <button type="button" class="btn btn-prod-pri" (click)="showAddForm()">
+                <img src="../../assets/add-24px (1).png"> <span>New Product</span>
+            </button>
+        </div>
+        <div class="download"><img src="../../assets/download.png"></div>
+        <div class="relative">
+            <div class="filter" (click)="$event.stopPropagation();filter=true;"><img src="../../assets/filter_alt-24px.png"> Filter</div>
+
+            <div class="filterDiv" *ngIf="filter" (click)="$event.stopPropagation();">
+                <form #filter="ngForm">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="code">FROM BV</label>
+                                <select class="form-control" name="category" [(ngModel)]="filterData.itemCategoryId">
+                                    <option value="">Select</option>
+                                    <option *ngFor="let category of categories" [value]="category.id"
+                                        [class]="category.activeStatus" [disabled]="category.activeStatus == 'INACTIVE'">
+                                        {{category.categoryName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="code">FROM BV</label>
+                                <input type="number" class="form-control" name="fromBV" [(ngModel)]="filterData.fromBV">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="code">TO BV</label>
+                                <input type="number" class="form-control" name="toBV" [(ngModel)]="filterData.toBV">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="code">AMULYA CODE</label>
+                                <input type="text" class="form-control" name="itemNumber" [(ngModel)]="filterData.itemNumber">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="code">PRODUCT NAME</label>
+                                <input type="text" class="form-control" name="itemName" [(ngModel)]="filterData.itemName">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="code">STATUS</label>
+                                <div style="display: inline-flex;">
+                                    <div class="form-check ml-2">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" value="ACTIVE" [(ngModel)]="filterData.status" checked>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                      Active
+                                    </label>
+                                    </div>
+                                    <div class="form-check ml-2">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" value="INACTIVE" [(ngModel)]="filterData.status">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                      In-Active
+                                    </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-right">
+                            <button type="button" class="btn btn-save float-right" (click)="filterProducts()"><span>Find Results</span></button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- <div class="date-range"><img src="../../assets/date_range-24px (1).png"> Last 30 Days <img src="../../assets/icon-right.png" style="transform: rotate(90deg);"></div> -->
+    </div>
+    <div class="page-content">
+        <div class="showList" *ngIf="!showList && !viewProduct">
+            <table class="table list-table" id="tableHeader">
+                <thead>
+                    <tr>
+                        <th scope="col" class="th-header" *ngFor="let head of header; let i = index" (click)="sortBy(head.APIname, head)">
+                            {{head.name}} <img *ngIf="head.showSort" src="../../assets/arrow_drop_up-24px.png"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of products; let i= index">
+                        <td class="venEdit" (click)="viewProducts(product)">{{ product.itemNumber}}</td>
+                        <td class="venEdit" (click)="viewProducts(product)">{{ product.itemName}}</td>
+                        <td>{{ product.itemCategory}}</td>
+                        <td>{{ product.unitOfMeasure}}</td>
+                        <td>{{ product.mrp}}</td>
+                        <td>{{ product.cp}}</td>
+                        <td>{{ product.dp}}</td>
+                        <td>{{ product.bv}}</td>
+                        <td>{{ product.hsn}}</td>
+                        <td>{{ product.pp}}</td>
+                        <!-- <td><img style="margin-right: 8px;cursor: pointer;">{{ product.availableQuantity}} -->
+                        <!-- src="../../assets/help-24px.png" (click)="open()" -->
+                        <!-- click disabled until further notice -->
+                        <!-- </td> -->
+                        <td>
+                            <div class="cell" [class]="product.status">{{product.status}}</div>
+                        </td>
+                        <td>
+                            <div class="controls" (click)="showOptions(product)">
+                                <img class="more-btn" *ngIf="!product.showMenu" src="../../assets/more_vert-24px @2x.png">
+                                <img class="more-btn" *ngIf="product.showMenu" src="../../assets/close-24px (2)@2x.png">
+                            </div>
+                            <div class="productMenu" *ngIf="product.showMenu">
+                                <div class="Edit elmnt" (click)="editRow(product)"><img src="../../assets/Edit.png">Edit
+                                </div>
+                                <!-- <div class="Edit elmnt"><img src="../../assets/manage.png">Manage Quantity
+                                </div> -->
+                                <div class="Edit elmnt" (click)="markInactive(product)"><img src="../../assets/library_add_check-24px.png">{{product.markText}}</div>
+                                <div class="Edit elmnt"><img src="../../assets/add_circle_outline-24px.png">New Sales Order
+                                </div>
+                                <div class="Edit elmnt"><img src="../../assets/add_circle_outline-24px.png">New Purchase Order
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between p-2 prodList-pagination" *ngIf="products?.length > 0">
+                <!-- <div class="backToTop" (click)="scrollToTop(pageTop)">Back to Top</div> -->
+                <div class="pagi">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="4" [pageSize]="pageSize" (pageChange)="refreshPages()"> </ngb-pagination>
+                </div>
+                <div class="pagesize">
+                    <div for="pagesize list-label">Items per page</div>
+                    <select class="form-control" id="pagesize" [(ngModel)]="pageSize" (change)="updatePageSize()" #pageSelect>
+                        <option [value]="10">10</option>
+                        <option [value]="25">25</option>
+                        <option [value]="50">50</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="showForm" *ngIf="showList">
+            <div class="header-row">
+                <div class="title"><img class="backBtn" (click)="closeProductForm()" src="../../assets/keyboard_backspace-24px (1).png" /> {{type}} Product</div>
+            </div>
+            <div class="content form">
+                <form [formGroup]="listAddForm">
+                    <div class="row">
+                        <div class=" col-6">
+                            <div class="row form-group px-15">
+                                <label for="category list-label">CATEGORY <span class="star">*</span></label>
+                                <select class="form-control" id="category" formControlName="itemCategoryId" (change)="getProductCode()" #catSelect [ngClass]="{ 'is-invalid': submitted && f.itemCategoryId.errors }">
+                                <option>Select</option>
+                                <option *ngFor="let category of categories" [value]="category.id" 
+                                    [class]="category.activeStatus" [disabled]="category.activeStatus == 'INACTIVE'">
+                                    {{category.categoryName}}
+                                </option>
+                                </select>
+                                <div *ngIf="f.itemCategoryId.invalid && (f.itemCategoryId.dirty || f.itemCategoryId.touched)" class="customAlert">
+                                    <div *ngIf="f.itemCategoryId.errors.required">
+                                        Category is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group px-15">
+                                <label for="code">AMULYA CODE<span class="star">*</span></label>
+                                <input type="text" class="form-control" id="code" formControlName="itemNumber" [readOnly]="isEdit">
+
+                            </div>
+                            <div class="row form-group px-15">
+                                <label for="itemname">ITEM NAME<span class="star">*</span></label>
+                                <input type="text" class="form-control" id="itemname" formControlName="itemName" [ngClass]="{ 'is-invalid': submitted && f.itemName.errors }">
+                                <div *ngIf="f.itemName.invalid && (f.itemName.dirty || f.itemName.touched)" class="customAlert">
+                                    <div *ngIf="f.itemName.errors.required">
+                                        Item name is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 text-center">
+                            <div>
+                                <img *ngIf="f.image.value" style="max-height: 200px;max-width: 100%;" [src]="image">
+                            </div>
+                            <div style="display: inline-flex;">
+                                <a class="text-success cursor-pointer" *ngIf="f.image.value" (click)="downloadImage()">Download</a>
+                                <a class="venEdit cursor-pointer ml-2" *ngIf="f.image.value" (click)="selectFiles()">Change Image</a>
+                                <a class="text-danger cursor-pointer ml-2" *ngIf="f.image.value" (click)="deleteImage()">Delete Image</a>
+                                <a class="venEdit cursor-pointer ml-2" *ngIf="!f.image.value" (click)="selectFiles()">Upload Image</a>
+                            </div>
+                            <!-- <button type="button" class="btn btn-outline-secondary close-btn" (click)="selectFiles()">Upload Image</button> -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-6">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="size">Size</label>
+                            <input type="number" class="form-control" id="size" formControlName="size">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="uom">UOM<span class="star">*</span></label>
+                            <div class="prod-select" (click)="showUOM()"> <img src="../../assets/icon-right.png" class="arrow-down" [ngClass]="{ 'is-invalid': submitted && f.unitOfMeasure.errors }" />
+                                <div class="selectedUom">{{selectedUom}}</div>
+                                <div class="options" *ngIf="showUom">
+
+                                    <div class="inner-option" *ngFor="let unit of uoms; let i = index" (click)="selectUOM(unit);">{{unit}}</div>
+                                    <div class="addLink" (click)="addNewUom()"><a class="addnew">Add New item</a></div>
+                                </div>
+                            </div>
+                            <div *ngIf="f.unitOfMeasure.invalid && (f.unitOfMeasure.dirty || f.unitOfMeasure.touched)" class="customAlert">
+                                <div *ngIf="f.unitOfMeasure.errors.required">
+                                    UOM is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="mrp">MRP<span class="star">*</span></label>
+                            <input type="number" class="form-control" id="mrp" (change)="Calculation()"  formControlName="mrp" [ngClass]="{ 'is-invalid': submitted && f.mrp.errors }">
+                            <div *ngIf="f.mrp.invalid && (f.mrp.dirty || f.mrp.touched)" class="customAlert">
+                                <div *ngIf="f.mrp.errors.required">
+                                    MRP is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-6">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                        <label for="cp">CP%<span class="star">*</span></label>
+                                    <input type="number" class="form-control" id="cpPercentage" formControlName="cpPercentage"  (change)="Calculation()"[ngClass]="{ 'is-invalid': submitted && f.cpPercentage.errors }">
+                                    <span class="error" *ngIf="showerror">{{errMsg}}</span>
+                                        <div app-errors class="text-danger"  [control]="f.cpPercentage"
+                                        label="CP% is"></div>
+                                </div>
+                            <div class="form-group col-6">
+                                <label for="cp">CP<span class="star">*</span></label>
+                                <input type="number" class="form-control" id="cp"  formControlName="cp" [ngClass]="{ 'is-invalid': submitted && f.cp.errors }" disabled>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group col-6">
+                            
+                        </div>
+                        <div class="form-group col-6">
+                            
+                           
+                        </div> -->
+                        <div class="form-group col-6">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="dp">DP%<span class="star">*</span></label>
+                                    <input type="number" class="form-control" id="dpPercentage" formControlName="dpPercentage"  (change)="Calculation()" [ngClass]="{ 'is-invalid': submitted && f.dpPercentage.errors }">
+                                    <span class="error" *ngIf="showerror">{{errMsg}}</span>
+                                    <div app-errors class="text-danger"  [control]="f.dpPercentage"
+                                    label="DP% is"></div>
+                                 </div>
+                                 <div class="form-group col-6">
+                                    <label for="dp">DP<span class="star">*</span></label>
+                                    <input type="number" class="form-control" id="dp" formControlName="dp" disabled [ngClass]="{ 'is-invalid': submitted && f.dp.errors }"> 
+                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-6">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="bv">BV%<span class="star">*</span></label>
+                                    <input type="number" class="form-control" id="bvPercentage" formControlName="bvPercentage" (change)="Calculation()" [ngClass]="{ 'is-invalid': submitted && f.bvPercentage.errors }">
+                                    <span class="error" *ngIf="showerror">{{errMsg}}</span>
+                                    <div app-errors class="text-danger"  [control]="f.bvPercentage"
+                                    label="BV% is"></div>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="bv">BV<span class="star">*</span></label>
+                                    <input type="number" class="form-control" id="bv" formControlName="bv" disabled  [ngClass]="{ 'is-invalid': submitted && f.bv.errors }">
+                                </div>
+                          </div>
+                         </div>   
+                        <div class="form-group col-6">
+                            <label for="hsn">HSN<span class="star">*</span></label>
+                            <input type="number" class="form-control" id="hsn" formControlName="hsn" [ngClass]="{ 'is-invalid': submitted && f.hsn.errors }">
+                            <div *ngIf="f.hsn.invalid && (f.hsn.dirty || f.hsn.touched)" class="customAlert">
+                                <div *ngIf="f.hsn.errors.required">
+                                    HSN is required.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-6">
+                            <div class="row">
+                                    <div class="form-group col-6">
+                                        <label for="pp">PP%<span class="star">*</span></label>
+                                        <input type="number" class="form-control" id="ppPercentage" formControlName="ppPercentage" (change)="Calculation()" [ngClass]="{ 'is-invalid': submitted && f.ppPercentage.errors }">
+                                        <span class="error" *ngIf="showerror">{{errMsg}}</span>
+                                        <div app-errors class="text-danger"  [control]="f.ppPercentage"
+                                        label="PP% is"></div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="pp">PP<span class="star">*</span></label>
+                                        <input type="number" class="form-control" id="pp" formControlName="pp"  disabled [ngClass]="{ 'is-invalid': submitted && f.pp.errors }">
+                                    </div>
+                                </div>     
+                        </div>            
+                        <div class="form-group col-12">
+                            <p class="m-0">GST Details</p>
+                        </div>
+                        <div class="form-group col-12">
+                            <div class="row">
+                                <div class="form-group col-2">
+                                    <label for="pp">IGST%<span class="star">*</span></label>
+                                    <select class="form-control" type="number" id="igstPercentage" formControlName="igstPercentage"  (change)="Calculation()" [ngClass]="{ 'is-invalid': submitted && f.igstPercentage.errors }" >
+                                        <option value=0>0</option>
+                                        <option value=5>5</option>
+                                        <option value=12>12</option>
+                                        <option value=18>18</option>
+                                        <option value=28>28</option>
+                                    </select>
+                                    <span class="error" *ngIf="showerror">{{errMsg}}</span>
+                                    <div app-errors class="text-danger"  [control]="f.igstPercentage"
+                                    label="IGST% is"></div>
+                                </div>
+                                <div class="form-group col-2">
+                                    <label for="IGST">IGST</label>
+                                    <input type="number" class="form-control"  disabled id="IGST" formControlName="igst">
+                                </div>
+                                <!-- <div class="form-group col-2">
+                                    <label for="pp">CGST%<span class="star">*</span></label>
+                                    <input type="number" class="form-control" id="cgstPercentage" formControlName="cgstPercentage"  disabled [ngClass]="{ 'is-invalid': submitted && f.pp.errors }">
+                                    <span class="error" *ngIf="showerror">{{errMsg}}</span>
+                                    <div app-errors class="text-danger"  [control]="f.cgstPercentage"
+                                    label="CGST% is"></div>
+                                </div> -->
+                                <div class="form-group col-2">
+                                    <label for="CGST">CGST</label>
+                                    <input type="number" class="form-control" disabled id="CGST" formControlName="cgst">
+                                </div>
+                                <!-- <div class="form-group col-2">
+                                     <label for="pp">HGST%<span class="star">*</span></label>
+                                     <input type="number" class="form-control" id="hgstPercentage" formControlName="hgstPercentage"  disabled [ngClass]="{ 'is-invalid': submitted && f.pp.errors }">
+                                     <span class="error" *ngIf="showerror">{{errMsg}}</span>
+                                     <div app-errors class="text-danger"  [control]="f.hgstPercentage"
+                                     label="HGST% is"></div>
+                                </div> -->
+                                <div class="form-group col-2">
+                                    <label for="HGST">HGST</label>
+                                    <input type="number" class="form-control" disabled id="HGST" formControlName="hgst">
+                                </div>
+                                <!-- <div class="form-group col-6">
+                                    <label for="unitOfMeasure">UOM<span class="star">*</span></label>
+                                    <input type="number" class="form-control" id="unitOfMeasure" formControlName="unitOfMeasure" [ngClass]="{ 'is-invalid': submitted && f.unitOfMeasure.errors }">
+                                    <div *ngIf="f.unitOfMeasure.invalid && (f.unitOfMeasure.dirty || f.unitOfMeasure.touched)" class="customAlert">
+                                        <div *ngIf="f.unitOfMeasure.errors.required">
+                                            UOM is required.
+                                        </div>
+                                    </div>
+                                </div> -->
+                          </div>
+                      </div>
+                    </div>
+                    <div class="form-group track-box">
+                        <input type="checkbox" aria-label="Track Quantity" disabled readonly formControlName="quantityTracked" checked [ngClass]="{ 'is-invalid': submitted && f.quantityTracked.errors }">
+                        <div class="track">Track Quantity</div>
+                        <div *ngIf="f.quantityTracked.invalid && (f.quantityTracked.dirty || f.quantityTracked.touched)" class="customAlert">
+                            <div *ngIf="f.quantityTracked.errors.required">
+                                Track Quantity is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="track-details">
+                        <div class="text">How do you want to track your items?<span class="star">*</span></div>
+                        <div class="row">
+                            <!-- <div class="col col-radio">
+                                <input type="checkbox" aria-label="Track Quantity" formControlName="serialControlled">
+                                <div class="text">By Serial Number</div>
+                            </div> -->
+                            <div class="col col-radio mb-2">
+                                <input disabled type="checkbox" aria-label="Track Quantity" readonly formControlName="lotControlled" checked>
+                                <div class="text">By Batch Number</div>
+                            </div>
+                            <!-- <div class="col col-radio">
+                                <input type="checkbox" aria-label="Track Quantity" formControlName="revisionControlled">
+                                <div class="text">By Revision</div>
+                            </div>-->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- <div class="form-group col-6">
+                            <label for="vendors list-label">SUPPLIER NAME</label>
+                            <select class="form-control" id="vendors" formControlName="preferredVendor" #vendorselect>
+                                <option *ngFor="let vendor of vendors; let i = index" [value]="vendor">
+                                    {{vendor}}
+                                </option>
+                            </select>
+                        </div> -->
+                        <!-- <div class="form-group col-6">
+                            <label for="warehouse list-label">ASSOCIATE TO WAREHOUSE</label>
+                            <select class="form-control" id="warehouse" formControlName="applicableWareHouses" #warehouseselect>
+                                <option *ngFor="let warehouse of warehouses; let i = index" [value]="warehouse">
+                                    {{warehouse}}
+                                </option>
+                            </select>
+                        </div> -->
+                        <div class="form-group col-6">
+                            <label for="desc-textarea">DESCRIPTION</label>
+                            <textarea class="form-control" id="desc-textarea" rows="3" #name="" formControlName="itemDescription"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group track-box">
+                        <input type="checkbox" aria-label="Staff Discount Allowed" formControlName="staffDiscountAllowed">
+                        <div class="track">Staff Discount Allowed</div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label for="discount">DISCOUNT PERCENTAGE</label>
+                            <input type="number" class="form-control" id="discount" [readonly]="!f.staffDiscountAllowed.value" formControlName="discountPercentage">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="limit">MAX LIMIT PER STAFF</label>
+                            <input type="number" class="form-control" id="limit" [readonly]="!f.staffDiscountAllowed.value" formControlName="maxLimitPerStaff">
+                        </div>
+                    </div>
+                    <!-- <div class="upload">
+                    </div> -->
+                   
+                </form>
+                 <div class="footer-right mt-2">
+                        <button type="button" class="btn btn-outline-secondary mr-2" (click)="showList=!showList"><span>Cancel</span></button>
+                        <button type="button" class="btn btn-save" (click)="SaveProductData(listAddForm)"><span>Save Product</span></button>
+                    </div>
+            </div>
+        </div>
+        <div class="showForm" *ngIf="viewProduct">
+            <div class="header-row">
+                <div class="title"><img class="backBtn" (click)="viewProduct=!viewProduct" src="../../assets/keyboard_backspace-24px (1).png" /> View Product</div>
+            </div>
+            <div class="content showForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <!-- <div class="header">CATEGORY</div> -->
+                            <div for="category list-label">CATEGORY </div>
+                            <div class="value">{{selectedProduct.itemCategory}}</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="category list-label">AMULYA CODE</div>
+                            <div class="value">{{selectedProduct.itemNumber}}</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="category list-label">PRODUCT NAME</div>
+                            <div class="value">{{selectedProduct.itemName}}</div>
+                        </div>
+                    </div>
+                    <div class="col-6 text-center">
+                        <div>
+                            <img *ngIf="f.image.value" style="max-height: 200px;max-width: 100%;" [src]="image">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div for="category list-label">SIZE </div>
+                            <div class="value">{{selectedProduct.size}}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div for="category list-label">UOM </div>
+                            <div class="value">{{selectedProduct.unitOfMeasure}}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div for="category list-label">MRP </div>
+                            <div class="value">{{selectedProduct.mrp}}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div for="category list-label">CP </div>
+                            <div class="value">{{selectedProduct.cp}}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div for="category list-label">DP </div>
+                            <div class="value">{{selectedProduct.dp}}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div for="category list-label">BV </div>
+                            <div class="value">{{selectedProduct.bv}}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div for="category list-label">HSN </div>
+                            <div class="value">{{selectedProduct.hsn}}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div for="category list-label">PP </div>
+                            <div class="value">{{selectedProduct.pp}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-2">
+                            <div for="category list-label">GST Details</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4">
+                        <div for="category list-label">IGST </div>
+                        <div class="value">{{selectedProduct.igst}}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div for="category list-label">CGST </div>
+                        <div class="value">{{selectedProduct.cgst}}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div for="category list-label">HGST </div>
+                        <div class="value">{{selectedProduct.hgst}}</div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        Staff Discount Allowed: <b> {{selectedProduct.staffDiscountAllowed?'YES':'NO'}} </b> 
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <div for="category list-label">DISCOUNT PERCENTAGE </div>
+                        <div class="value">{{selectedProduct.discountPercentage}}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div for="category list-label">MAX LIMIT PER STAFF </div>
+                        <div class="value">{{selectedProduct.maxLimitPerStaff}}</div>
+                    </div>
+                </div>
+                
+                <div class="text-right">
+                    <button type="button" class="btn btn-outline-secondary close-btn float-right" (click)="viewProduct=!viewProduct">Cancel</button>
+                </div>
+
+                <div class="clearfix"></div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<input type="file" #fileInput style="width: 100%;visibility: hidden; height: 0px;" (change)="uploadFile()" />

@@ -1,0 +1,91 @@
+<div class="p-container" #pageTop>
+    <div class="header-row" *ngIf="showList">
+        <div class="title">Non Sales Orders</div>
+        <div>
+            <button class="btn tran-type" [routerLink]="['/miscTransaction','receipt']"><img src="../../assets/inventory-Inactive.png" /> Receipt (Moving In)</button>
+            <button class="btn tran-type" [routerLink]="['/miscTransaction','issue']"><img src="../../assets/inventory-Inactive.png" /> Issue (Moving out)</button>
+            <!-- <button type="button" class="btn btn-prod-pri" [routerLink]="['/miscTransaction']">
+                <div><img src="../../assets/add-24px (1).png"></div>
+                <div>New Transaction</div>
+            </button> -->
+        </div>
+        <div class="download"><img src="../../assets/download.png"></div>
+        <div class="filter"><img src="../../assets/filter_alt-24px.png"> Filter</div>
+    </div>
+    <div class="page-content">
+
+       
+        <!-- <div class="row">
+            <div class="form-group col-12">
+                <div class="transtype">Select Transaction Type <span class="star">*</span></div>
+                <div class="row">
+                    <div class="col-6">
+                        <button class="btn tran-type" [routerLink]="['/miscTransaction','receipt']"><img src="../../assets/inventory-Inactive.png" /> Receipt (Moving In)</button>
+                        <button class="btn tran-type" [routerLink]="['/miscTransaction','issue']"><img src="../../assets/inventory-Inactive.png" /> Issue (Moving out)</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+          
+
+        <div class="showList" *ngIf="showList">
+            <table class="table list-table">
+                <thead>
+                    <tr>
+                        <th scope="col" *ngFor="let head of header; let i = index">
+                            <div *ngIf="head.showSort" class="sort" (click)="sortBy(head.APIname, head)">{{head.name}}<img src="../../assets/arrow_drop_up-24px.png"></div>
+                            <div *ngIf="!head.showSort">{{head.name}}</div>
+                        </th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let transaction of transactions; let i= index">
+                        <td>{{transaction.transactionDate | date:"dd/MM/yyyy"}}</td>
+                        <td class="venEdit">
+                            <div [routerLink]="['/miscTransaction','view',transaction.id]">{{transaction.transactionCode}}</div>
+                        </td>
+                        <td>{{transaction.transactionReason}}</td>
+                        <td>{{transaction.createdBy}}</td>
+                        <td>{{transaction.transactionTypeName}}</td>
+                        
+                        <td>
+                            <div class="cell" [class]="transaction.status">{{transaction.status}}</div>
+                        </td>
+                        <td>
+
+                            <div class="d-inline-block listdropdown">
+                                <button class="btn listbtn p-0 l-0" id="dropdownBasic1" (click)="showOptions($event,transaction)">
+                                    <img class="more-btn" *ngIf="!transaction.showMenu"  (click)="showOptions($event,transaction)" src="../../assets/more_vert-24px @2x.png">
+                                    <img class="more-btn" *ngIf="transaction.showMenu"  (click)="showOptions($event,transaction)" src="../../assets/close-24px (2)@2x.png">
+                                </button>
+                                <div aria-labelledby="dropdownBasic1" class="purchaseMenu" *ngIf="transaction.showMenu">
+                                    <div class="Edit elmnt" [routerLink]="['/miscTransaction','view',transaction.id]"><img src="../../assets/Edit.png">View Details
+                                    </div>
+                                    <div class="Edit elmnt" [routerLink]="['/miscTransaction','edit',transaction.id]" *ngIf="transaction.status == 'DRAFTED'"><img src="../../assets/Edit.png">Edit</div>
+                                    <div class="Edit elmnt" [routerLink]="['/miscTransaction','clone',transaction.id]"><img src="../../assets/manage.png">Clone
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between p-2 prodList-pagination" *ngIf="transactions?.length > 0">
+                <!-- <div class="backToTop" (click)="scrollToTop(pageTop)">Back to Top</div> -->
+                <div class="pagi">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="4" [pageSize]="pageSize" (pageChange)="refreshPages()"> </ngb-pagination>
+                </div>
+                <div class="pagesize">
+                    <div for="pagesize list-label">Items per page</div>
+                    <select class="form-control" id="pagesize" [(ngModel)]="pageSize" (change)="updatePageSize()" #pageSelect>
+                        <option [value]="10">10</option>
+                        <option [value]="25">25</option>
+                        <option [value]="50">50</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

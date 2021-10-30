@@ -1,0 +1,379 @@
+<div class="p-container">
+    <div class="showForm">
+
+        <div class="header-row" style="display: flex;">
+            <div class="title"><img class="backBtn" [routerLink]="['/sales']" src="../../assets/keyboard_backspace-24px (1).png" /> {{headerText}}</div>
+        </div>
+        <div class="page-content">
+            <!-- sale form -->
+            <div class="content">
+                <div class="form">
+                    <form [formGroup]="saleForm">
+                        <div class="saleForm">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="name list-label">SALES ORDER #<span class="star">*</span></label>
+                                    <input type="text" class="form-control" style="font-weight: 700;" id="name" formControlName="salesOrderCode" disabled readonly>
+                                </div>
+                                <div class="form-group col-2">
+                                    <label for="vendor">DISTRIBUTOR ID<span class="star">*</span></label>
+                                    <input type="text" class="form-control" [readonly]="type=='view'" id="customerID" formControlName="customerID" (change)="customerID($event.target)" >
+                                    <div app-errors class="text-danger" [submit]="submitted" [control]="f.customerID"
+                                        label="Distributor ID"></div>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="vendor">CUSTOMER NAME<span class="star">*</span></label>
+                                    <input type="text" class="form-control" id="customerName" formControlName="customerName" [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors }" disabled>
+                                    <div app-errors class="text-danger" [submit]="submitted" [control]="f.customerName"
+                                        label="Customer Name"></div>
+                                </div>
+                            </div>
+                            <!-- <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="vendor">CUSTOMER NAME<span class="star">*</span></label>
+                                    <input type="text" class="form-control" id="customerName" formControlName="customerName" [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors }">
+                                    <div app-errors class="text-danger" [submit]="submitted" [control]="f.customerName"
+                                        label="Customer Name"></div>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="businessName" style="color: #999999;">BUSINESS NAME</label>
+                                    <input type="text" class="form-control" id="businessName" formControlName="businessName">
+                                </div>
+                            </div> -->
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="phoneNumber">PHONE NUMBER<span class="star">*</span></label>
+                                    <input formControlName="phoneNumber" class="form-control" type="text"
+                                        [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors }" disabled>
+                                    <div app-errors class="text-danger" [submit]="submitted" [control]="f.phoneNumber"
+                                        label="Phone Number"></div>
+                                    <!-- <input type="text" class="form-control" id="phoneNumber" formControlName="phoneNumber">
+                                    <div *ngIf="saleForm.get('phoneNumber').invalid && (saleForm.get('state').dirty || saleForm.get('phoneNumber').touched)" class="text-danger">
+                                        <div *ngIf="saleForm.get('phoneNumber').errors.required">
+                                            Required.
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="email">EMAIL<span class="star">*</span></label>
+                                    <input type="text" class="form-control" id="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" disabled>
+                                    <div app-errors class="text-danger" [submit]="submitted" [control]="f.email"
+                                        label="Email"></div>
+                                    <!-- <div *ngIf="saleForm.get('email').invalid && (saleForm.get('state').dirty || saleForm.get('email').touched)" class="text-danger">
+                                        <div *ngIf="saleForm.get('email').errors.required">
+                                            Required.
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="pincode">PIN CODE<span class="star"></span></label>
+                                    <input type="text" class="form-control" id="pincode" formControlName="pinCode" (change)="pincode($event.target)" [ngClass]="{ 'is-invalid': submitted && f.pinCode.errors }" disabled>
+                                    <div app-errors class="text-danger" [submit]="submitted" [control]="f.pinCode" label="PIN Code"></div>
+                                    <!-- <div *ngIf="saleForm.get('pinCode').invalid && (saleForm.get('state').dirty || saleForm.get('pinCode').touched)" class="text-danger">
+                                        <div *ngIf="saleForm.get('pinCode').errors.required">
+                                            Required.
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>STATE</label>
+                                    <input type="text" class="form-control" formControlName="state" disabled>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>CITY</label>
+                                        <input type="text" class="form-control" formControlName="city" disabled>
+                                </div>
+                                
+                                <div class="form-group col-6">
+                                    <label for="address">ADDRESS</label>
+                                    <input type="text" class="form-control" id="address" formControlName="address">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="location">WAREHOUSE <span class="star" *ngIf="type=='issue'">*</span></label>
+                                    <select class="form-control" id="location" formControlName="wareHouse" #cityselect [ngClass]="{ 'is-invalid': submitted && f.wareHouse.errors }">
+                                    <option *ngFor="let warehouse of warehouses; let i = index" [value]="warehouse">
+                                        {{warehouse}}
+                                    </option>
+                                </select>
+                                <div app-errors class="text-danger" [submit]="submitted" [control]="f.wareHouse"
+                                        label="Warehouse"></div>
+                                    <!-- <div *ngIf="saleForm.get('wareHouse').invalid && (saleForm.get('wareHouse').dirty || saleForm.get('wareHouse').touched)" class="customAlert">
+                                        <div *ngIf="saleForm.get('wareHouse').errors.required">
+                                            Warehouse is required.
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="createdBy" style="color: #999999;">CREATED BY<span
+                                        class="star">*</span></label>
+                                    <input type="text" class="form-control" id="createdBy" formControlName="createdBy">
+                                </div>
+                                <!-- <div class="form-group  col-6">
+                                    <label for="dueDate">Expected shipment DATE<span class="star">*</span></label>
+                                    <div class="input-group">
+                                        <input placeholder="Select" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control" [attr.disabled]="(currentId!=null&&type=='receive')?true:null" formControlName="dueDate" id="dueDate">
+                                        <div class="input-group-append" [owlDateTimeTrigger]="dt1">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <img src="./assets/date_range-24px (1).png">
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                    <div *ngIf="saleForm.get('dueDate').invalid && (saleForm.get('dueDate').dirty || saleForm.get('dueDate').touched)" class="text-danger">
+                                        <div *ngIf="saleForm.get('dueDate').errors.required">
+                                            Required.
+                                        </div>
+                                    </div>
+                                    <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+                                </div> -->
+
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="notes">NOTES</label>
+                                    <textarea class="form-control" id="notes" [readonly]="type=='view'" rows="3" #name="" formControlName="notes"></textarea>
+                                </div>
+                                <!-- <div class="form-group col-6">
+                                    <label for="paymentTerms">PAYMENT TERMS</label>
+                                    <textarea class="form-control" id="paymentTerms" rows="3" #name="" formControlName="paymentTerms"></textarea>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="products">
+                            <div class="itemsContainer" style="overflow-x:scroll;">
+                                <table *ngIf="type!='receive'" class="table list-table" style="min-width:1800px;">
+                                    <thead>
+                                        <tr>
+                                            <th style="min-width:300px;">ITEM DETAILS</th>
+                                            <th>BATCH NUMBER</th>
+                                            <th>EXPIRY DATE</th>
+                                            <th>AVAILABLE QTY</th>
+                                            <th>QTY</th>
+                                            <th *ngIf="type=='issue'">Issue QTY</th>
+                                            <th>UOM</th>
+                                            <th>RATE</th>
+                                            <th>AMOUNT</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container class="rows" formArrayName="salesOrderItems" *ngFor="let item of saleForm.get('salesOrderItems')['controls']; let i = index;">
+                                            <ng-container [formGroupName]="i">
+                                                <tr>
+                                                    <td style="min-width: 35%;" *ngIf="type!='view'">
+                                                        <!-- <select class="form-control " id="product" formControlName="itemName" #itemselect (change)="onProductSelection(item)">
+                                                            <option *ngFor="let product of productList; let i = index"
+                                                                [value]="product.itemName">
+                                                                {{product.itemName}}
+                                                            </option>
+                                                        </select> -->
+                                                        <div style="display: flex;">
+                                                            <!-- <input *ngIf="type=='issue' && item.controls.itemName.value" type="text" formControlName="itemName" class="form-control itemName" (input)="searchItm(item)" [readonly]="type=='issue'"> -->
+                                                            <input type="hidden" formControlName="itemNumber" class="form-control itemName">
+                                                            
+                                                            <input type="text" formControlName="itemName" class="form-control itemName" (input)="searchItm(item)">
+                                                            <button class="btn itemdpdown p-0" (click)="showProducts($event,item)"><img
+                                                        src="../../assets/arrow_drop_down-24px.png" /></button>
+                                                            <button class="btn search p-0" (click)="getProductByCode(item)"><img
+                                                        src="../../assets/search-24px (2).png"></button>
+                                                            <div class="options" *ngIf="item.controls['showProdList'].value" infiniteScroll [infiniteScrollDistance]="5" [infiniteScrollThrottle]="50" [scrollWindow]="false" (scrolled)="onScroll()">
+                                                                <div class="inner-option" *ngFor="let product of productList; let i = index" (click)="onProductSelection(item, product)" title="{{product.itemName}}">
+                                                                    {{product.itemNumber}} - {{product.itemName}}
+                                                                </div>
+                                                                <div class="inner-option" *ngIf="productList.length == 0">
+                                                                    No items found
+                                                                </div>
+                                                            
+                                                        </div>
+                                                        </div>
+                                                        <div *ngIf="item.get('itemName').invalid && (item.get('itemName').dirty || item.get('itemName').touched)" class="text-danger">
+                                                            <div *ngIf="item.get('itemName').errors.required">
+                                                                Required.
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td style="min-width: 35%;" *ngIf="type=='view'" >
+                                                        <!-- <select class="form-control " id="product" formControlName="itemName" #itemselect (change)="onProductSelection(item)">
+                                                            <option *ngFor="let product of productList; let i = index"
+                                                                [value]="product.itemName">
+                                                                {{product.itemName}}
+                                                            </option>
+                                                        </select> -->
+                                                        <div style="display: flex;">
+                                                            <!-- <input *ngIf="type=='issue' && item.controls.itemName.value" type="text" formControlName="itemName" class="form-control itemName" (input)="searchItm(item)" [readonly]="type=='issue'"> -->
+                                                            <input type="hidden" formControlName="itemNumber" class="form-control itemName" disabled>
+                                                            
+                                                            <input type="text" formControlName="itemName" class="form-control itemName" (input)="searchItm(item)" disabled>
+                                                            <button class="btn itemdpdown p-0" (click)="showProducts($event,item)" disabled><img
+                                                        src="../../assets/arrow_drop_down-24px.png" /></button>
+                                                            <button class="btn search p-0" (click)="getProductByCode(item)" disabled><img
+                                                        src="../../assets/search-24px (2).png"></button>
+                                                            <div class="options" *ngIf="item.controls['showProdList'].value" infiniteScroll [infiniteScrollDistance]="5" [infiniteScrollThrottle]="50" [scrollWindow]="false" (scrolled)="onScroll()">
+                                                                <div class="inner-option" *ngFor="let product of productList; let i = index" (click)="onProductSelection(item, product)" title="{{product.itemName}}">
+                                                                    {{product.itemNumber}} - {{product.itemName}}
+                                                                </div>
+                                                                <div class="inner-option" *ngIf="productList.length == 0">
+                                                                    No items found
+                                                                </div>
+                                                            
+                                                        </div>
+                                                        </div>
+                                                        <div *ngIf="item.get('itemName').invalid && (item.get('itemName').dirty || item.get('itemName').touched)" class="text-danger">
+                                                            <div *ngIf="item.get('itemName').errors.required">
+                                                                Required.
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control" style="min-width: 110px;"  *ngIf="type!='view'" formControlName="lotNumber" (change)="lotSelected(item)" >
+                                                            <option *ngFor="let lot of lotNumbers" [value]="lot.lotNumber">{{lot.lotNumber}}</option>
+                                                        </select>
+                                                        <select class="form-control" style="min-width: 110px;"  *ngIf="type=='view'" formControlName="lotNumber" (change)="lotSelected(item)" disabled >
+                                                            <option *ngFor="let lot of lotNumbers" [value]="lot.lotNumber">{{lot.lotNumber}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="input-group" [title]="item.get('expiryDate').value" *ngIf="type!='view'">
+
+                                                        <input placeholder="Select" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control" formControlName="expiryDate" id="expiryDate">
+                                                        <div class="input-group-append" [owlDateTimeTrigger]="dt1">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <img src="./assets/date_range-24px (1).png">
+                                                            </span>
+
+
+                                                        </div>
+
+                                                        <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+
+                                                        <div *ngIf="item.get('expiryDate').invalid && (item.get('expiryDate').dirty || item.get('expiryDate').touched)" class="customAlert">
+                                                            <div *ngIf="item.get('expiryDate').errors.required">
+                                                                Required.
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="input-group" [title]="item.get('expiryDate').value" *ngIf="type=='view'">
+
+                                                        <input placeholder="Select" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control" formControlName="expiryDate" id="expiryDate" disabled>
+                                                        <div class="input-group-append" [owlDateTimeTrigger]="dt1" disabled>
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <img src="./assets/date_range-24px (1).png">
+                                                            </span>
+
+
+                                                        </div>
+
+                                                        <owl-date-time #dt1 [pickerType]="'calendar'" disabled></owl-date-time>
+
+                                                        <div *ngIf="item.get('expiryDate').invalid && (item.get('expiryDate').dirty || item.get('expiryDate').touched)" class="customAlert" disabled>
+                                                            <div *ngIf="item.get('expiryDate').errors.required">
+                                                                Required.
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <input type="number" class="form-control" id="availableQty" formControlName="availableQty" disabled>
+                                                    </td>
+                                                    <td *ngIf="type!='view'">
+                                                        <input *ngIf="type=='issue'" type="text" class="form-control quantity" id="quantity" formControlName="quantity" placeholder="" (input)="calculateAmount(item)" disabled>
+                                                        <input *ngIf="type!='issue'" type="text" class="form-control quantity" id="quantity" formControlName="quantity" placeholder="" (input)="calculateAmount(item)">
+                                                    </td>
+                                                    <td *ngIf="type=='view'">
+                                                        <input *ngIf="type=='issue'" type="text" class="form-control quantity" id="quantity" formControlName="quantity" placeholder="" (input)="calculateAmount(item)" disabled>
+                                                        <input *ngIf="type!='issue'" type="text" class="form-control quantity" id="quantity" formControlName="quantity" placeholder="" (input)="calculateAmount(item)" disabled>
+                                                    </td>
+                                                    <td *ngIf="type=='issue'">
+                                                        <input type="text" class="form-control issueQuantity" id="issueQuantity" formControlName="issueQuantity" placeholder="" (input)="calculateAmount(item)">
+                                                    </td>
+                                                    <td *ngIf="type!='view'">
+                                                        <input *ngIf="type=='issue'" type="text" class="form-control " id="uom" placeholder="" formControlName="uom" disabled>
+                                                        <input *ngIf="type!='issue'" type="text" class="form-control " id="uom" placeholder="" formControlName="uom">
+                                                    </td>
+                                                    <td *ngIf="type=='view'">
+                                                        <input *ngIf="type=='issue'" type="text" class="form-control " id="uom" placeholder="" formControlName="uom" disabled>
+                                                        <input *ngIf="type!='issue'" type="text" class="form-control " id="uom" placeholder="" formControlName="uom" disabled>
+                                                    </td>
+                                                    <td *ngIf="type!='view'">
+                                                        <input *ngIf="type=='issue'" type="text" class="form-control " id="price" placeholder="" disabled formControlName="price" disabled>
+                                                        <input *ngIf="type!='issue'" type="text" class="form-control " id="price" placeholder="" disabled formControlName="price">
+                                                    </td>
+                                                    <td *ngIf="type=='view'">
+                                                        <input *ngIf="type=='issue'" type="text" class="form-control " id="price" placeholder="" disabled formControlName="price" disabled>
+                                                        <input *ngIf="type!='issue'" type="text" class="form-control " id="price" placeholder="" disabled formControlName="price" disabled>
+                                                    </td>
+                                                    <td *ngIf="type!='view'">
+                                                        <input type="text" class="form-control " id="itemAmount" placeholder="" formControlName="itemAmount">
+
+                                                    </td>
+                                                    <td *ngIf="type=='view'">
+                                                        <input type="text" class="form-control " id="itemAmount" placeholder="" formControlName="itemAmount" disabled>
+
+                                                    </td>
+                                                    <td>
+                                                        <div class="item-close" *ngIf="type!='view'">
+                                                            <img src="../../assets/cancel.png" height="20" (click)="removeItem(i)" />
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-container>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3" >
+                                                <button *ngIf="type!='view'" type="button" class="btn btn-save" (click)="addItem()">Add Another</button>
+                            
+                                            </td>
+                                            <td>
+                                                <b>Total</b>
+                                            </td>
+                                            <td><b>₹ {{saleForm.get('totalAmount').value}} </b></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                                <div class="table-btm">
+
+                                </div>
+                                <!-- <div class="pricing">
+                                        <div class="price">
+                                            <div class="text">Sub Total</div>
+                                            <div class="rate">₹ {{saleForm.get('totalAmount').value}}</div>
+                                        </div>
+                                        <div class="price">
+                                            <div class="text">Round off</div>
+                                            <div class="rate">₹ 0.00</div>
+                                        </div>
+                                        <div class="price">
+                                            <div class="text total">Total Amount</div>
+                                            <div class="rate total">₹ {{grandTotal}}</div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </form>
+                    <div class="footer-btns mt-2" *ngIf="type!='issue'">
+                        <div *ngIf="type!='issue' && type!='view'">
+                            <button type="button" class="btn btn-outline-secondary draft-btn" (click)="saveAsDraft()">Save Draft</button>
+                        </div>
+                        <button type="button" class="btn btn-outline-secondary close-btn" style="max-width: 100px" [routerLink]="['/sales']">Cancel</button>
+                        <button *ngIf="type!='issue' && type!='view'" type="button" class="btn btn-save" (click)="savesaleOrder(saleForm)"><span>Save sales Order</span></button>
+                        <button *ngIf="type=='issue' && type!='view'" type="button" class="btn btn-save" (click)="issuesaleOrder(saleForm)"><span>Issue sales Order</span></button>
+                    </div>
+                    <div class="footer-right mt-2" *ngIf="type=='receive'">
+                        <!-- <div>
+                <button type="button" class="btn btn-outline-secondary draft-btn" (click)="showList=!showList">Save Draft</button>
+            </div> -->
+                        <button type="button" class="btn btn-outline-secondary mr-2 close-btn" [routerLink]="['/sales']">Close</button>
+                        <button type="button" class="btn btn-save" (click)="recievesaleOrder(saleForm)"><span>Issue</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+<ng-container *ngIf="control && control.errors && (submit || control.touched)">
+  <span *ngIf="control.errors.required">{{label?label:'Field'}} Required</span>
+  <span *ngIf="control.errors.phone">Invalid phone</span>
+  <span *ngIf="control.errors.email">Invalid email</span>
+  <span *ngIf="control.errors.pincode">Invalid pincode</span>
+  <span *ngIf="control.errors.pan">Invalid PAN</span>
+  <span *ngIf="control.errors.digitOnly">{{label?label:''}} digits only</span>
+  <span *ngIf="control.errors.pattern">Pattern mismatch for {{label?label:'Field'}}</span>
+  <span *ngIf="control.errors.percentage">Invalid Percentage Value</span>
+</ng-container>

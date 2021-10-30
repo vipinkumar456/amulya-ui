@@ -1,0 +1,117 @@
+<div class="p-container">
+    <div class="header-row">
+        <div class="title">Total Distributors</div>
+        <div>
+            <button type="button" class="btn btn-prod-pri" [routerLink]="['/distributor','registration','']">
+                <div><img src="../../assets/add-24px (1).png"></div>
+                <div>New Distributor</div>
+            </button>
+        </div>
+        <div></div>
+        <div class="filter"><img src="../../assets/filter_alt-24px.png"> Filter</div>
+    </div>
+    <div class="filter-container">
+        <h4>Filter By</h4>
+        <form [formGroup]="distFilterForm">
+        <div class="row form-group">
+            <div class="col">
+                <input type="text" formControlName="fromDate" class="form-control" placeholder="FROM DATE" />
+            </div>
+            <div class="col">
+                <input type="text" formControlName="toDate" class="form-control" placeholder="TO DATE" />
+            </div>
+            <div class="col">
+                <input type="text" formControlName="sponsorCode" class="form-control" placeholder="SPONSOR CODE" />
+            </div>
+            <div class="col">
+                <input type="text" formControlName="distributorCode" class="form-control" placeholder="DISTRIBUTOR CODE" />
+            </div>
+            <div class="col">
+                <input type="text" formControlName="pan" class="form-control" placeholder="PAN NO." />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <!-- <input type="text" formControlName="subscription" class="form-control" placeholder="SUBSCRIPTION" /> -->
+                <select class="form-control" id="distributorStatus" placeholder="DISTRIBUTOR STATUS" formControlName="distributorStatus" #distributorStatus>
+                    <option value="">Select Status</option>
+                    <option *ngFor="let status of statusList; let i = index" [value]="status.code">
+                        {{status.label}}
+                    </option>
+                </select>
+            </div>
+            <div class="col">
+                <!-- <input type="text" formControlName="state" class="form-control" placeholder="SELECT STATE" /> -->
+                <select class="form-control" id="state" placeholder="STATE" formControlName="state" #stateselect (change)="onStateSelect()">
+                    <option value="">Select State</option>
+                    <option *ngFor="let state of states; let i = index" [value]="state">
+                        {{state}}
+                    </option>
+                </select>
+            </div>
+            <div class="col">
+                <!-- <input type="text" formControlName="city" class="form-control" placeholder="SELECT CITY" /> -->
+                <select class="form-control" id="city" placeholder="CITY" formControlName="city" #cityselect>
+                    <option value="">Select City</option>
+                    <option *ngFor="let city of cities; let i = index" [value]="city">
+                        {{city}}
+                    </option>
+                </select>
+            </div>
+            <div class="col">
+                <button class="btn" (click)="filterDistributor()">Search</button>
+            </div>
+            <div class="col">
+                
+            </div>
+        </div>
+        </form>
+    </div>
+    <div class="page-content">
+        <div class="showList">
+            <div class="itemsContainer" style="overflow-x:scroll;">
+            <table class="table list-table" id="tableHeader">
+                <thead>
+                    <tr>
+                        <th scope="col" class="th-header" *ngFor="let head of header; let i = index" (click)="sortBy(head.APIname, head)" [ngStyle]="{'width':head.width}">
+                            {{head.name}} <img *ngIf="head.showSort" src="../../assets/arrow_drop_up-24px.png"></th>
+                        <!-- <th scope="col" style="width:200px;"></th>
+                        <th scope="col" style="width:200px;"></th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let distributor of distributors; let i= index">
+                        <td>{{i+1}}</td>
+                        <td>{{distributor.distributorId}}</td>
+                        <td>{{distributor.name}}</td>
+                        <td>{{distributor.createdDate | date:"dd/MM/yyyy"}}</td>
+                        <td>{{distributor.sponsorId}}</td>
+                        <td>{{distributor.sponsorName}}</td>
+                        <td>{{distributor.activationDate | date:"dd/MM/yyyy"}}</td>
+                        <td nowrap>{{distributor.distributorStatusName}}</td>
+                        <td nowrap>
+                            <a *ngIf="!(distributor.distributorStatus=='KYC_DOCUMENTS_PENDING' || distributor.distributorStatus=='KYC_APPROVED')" [routerLink]="['/distributor-info','edit',distributor.distributorId]">Edit</a>
+                            <a *ngIf="distributor.distributorStatus=='KYC_DOCUMENTS_PENDING'" [routerLink]="['/distributor-kyc',distributor.distributorId]">Update KYC</a>
+                            <a *ngIf="distributor.distributorStatus=='KYC_APPROVED'" [routerLink]="['/distributor-info','view',distributor.distributorId]">View</a>
+                        </td>
+                        <td nowrap><a [routerLink]="['/distributor','edit',distributor.distributorId]">Edit Name</a></td>
+                    </tr>
+            </table>
+            </div>
+            <div class="d-flex justify-content-between p-2 prodList-pagination" *ngIf="distributors?.length > 0">
+                <!-- <div class="backToTop" (click)="scrollToTop(pageTop)">Back to Top</div> -->
+                <div class="pagi">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="4" [pageSize]="pageSize" (pageChange)="refreshPages()"> </ngb-pagination>
+                </div>
+                <div class="pagesize">
+                    <div for="pagesize list-label">Items per page</div>
+                    <select class="form-control" id="pagesize" [(ngModel)]="pageSize" (change)="updatePageSize()" #pageSelect>
+                        <option [value]="10">10</option>
+                        <option [value]="25">25</option>
+                        <option [value]="50">50</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

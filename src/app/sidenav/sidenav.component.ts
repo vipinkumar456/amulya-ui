@@ -1,0 +1,20 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-sidenav',
+  templateUrl: './sidenav.component.html',
+  styleUrls: ['./sidenav.component.css']
+})
+export class SidenavComponent implements OnInit {
+
+  showList: boolean;
+
+  constructor() { }
+
+  ngOnInit(): void {
+    this.showList = false;
+  }
+  showSubNav() {
+    this.showList = !this.showList;
+  }
+}

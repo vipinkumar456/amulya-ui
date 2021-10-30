@@ -1,0 +1,86 @@
+<div class="p-container">
+    <div class="showForm">
+
+        <div class="header-row" style="display: flex;">
+            <div class="title"><img class="backBtn" [routerLink]="['/distributors']" src="../../assets/keyboard_backspace-24px (1).png" /> {{headerText}}</div>
+        </div>
+        <div class="page-content">
+            <!-- sale form -->
+            <div class="content">
+                <div class="form">
+                    <form [formGroup]="distRegForm">
+                        <div class="saleForm">
+                            <div class="row form-group">
+                                <div class="col-6">
+                                    <label>SPONSOR ID#<span class="star">*</span></label>
+                                    <input type="text" class="form-control" formControlName="sponsorId" [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors }">
+                                    <div app-errors class="text-danger" [submit]="submitted" [control]="f.sponsorId" label="Sponsor ID"></div>
+                                </div>
+                                <div class="col-6" *ngIf="type!='edit'">
+                                    <p style="margin-bottom: 3px;">&nbsp;</p>
+                                    <button class="btn btn-save" (click)="getSponsorInfo()">View Sponsor Details</button>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-6">
+                                    <label>SPONSOR NAME</label>
+                                    <input type="text" class="form-control" formControlName="sponsorName" disabled>
+                                </div>
+                                <div class="col-6">
+                                    <label>SPONSOR EMAIL</label>
+                                    <input type="text" class="form-control" formControlName="sponsorEmail" disabled>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-6">
+                                    <label>PLACEMENT<span class="star">*</span></label>
+                                    <!-- <input type="text" class="form-control" formControlName="placement"> -->
+                                    <select class="form-control" id="placement" formControlName="placement" #placementselect [ngClass]="{ 'is-invalid': submitted && f.placement.errors }">
+                                        <option value="LEFT">Left</option>
+                                        <option value="RIGHT">Right</option>
+                                    </select>
+                                    <div app-errors class="text-danger" [submit]="submitted" [control]="f.placement" label="Placement"></div>
+                                </div>
+                                <div class="col-6">
+                                    <label>NAME<span class="star">*</span></label>
+                                    <input type="text" class="form-control" formControlName="name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                                    <div app-errors class="text-danger" [submit]="submitted" [control]="f.name" label="Name"></div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-6">
+                                    <label>PHONE NUMBER<span class="star">*</span></label>
+                                    <input formControlName="phoneNumber" class="form-control" type="text"
+                                        [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors }">
+                                    <div app-errors class="text-danger" [submit]="submitted" [control]="f.phoneNumber"
+                                        label="Phone Number"></div>
+                                    <!-- <div *ngIf="f.phoneNumber.errors.phone">Please enter 10 digits mobile number</div> -->
+                                </div>
+                                <div class="col-6">
+                                    <label>EMAIL<span class="star">*</span></label>
+                                    <input type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                                    <div app-errors class="text-danger" [submit]="submitted" [control]="f.email" label="Email"></div>
+                                    <!-- <div *ngIf="f.phoneNumber.errors.email">Please enter valid email ID</div> -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="radio" formControlName="codeConduct" value="code" name="codeConduct"> <a href="../../assets/Code of Conduct-converted.pdf" target="_blank"> Code of conduct</a>
+                                <div app-errors class="text-danger" [submit]="submitted" [control]="f.codeConduct" label="Code of conduct"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="radio" formControlName="termCondition" value="term" name="termCondition"> I've read and accept all <a href="../../assets/terms and conditions.pdf" target="_blank">terms and conditions</a>
+                                <div app-errors class="text-danger" [submit]="submitted" [control]="f.termCondition" label="Terms and Conditions"></div>
+                            </div>
+                            <div class="footer-right mt-2">
+                                <button type="button" class="btn btn-outline-secondary mr-2 close-btn" [routerLink]="['/distributors']">Cancel</button>
+                                <button *ngIf="type!='edit'" type="button" class="btn btn-save" (click)="saveDistributor()"><span>Save Registration</span></button>
+                                <button *ngIf="type=='edit'" type="button" class="btn btn-save" (click)="updateDistributor()"><span>Save Information</span></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

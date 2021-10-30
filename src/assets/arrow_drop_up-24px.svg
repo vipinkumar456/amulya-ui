@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>arrow_drop_up-24px</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Inventory" transform="translate(-531.000000, -226.000000)" fill="#8E8E8E" fill-rule="nonzero">
+            <g id="Group-12" transform="translate(280.000000, 146.000000)">
+                <g id="Group-11">
+                    <g id="Group-8" transform="translate(0.000000, 65.000000)">
+                        <g id="Group-18-Copy-2" transform="translate(209.000000, 15.000000)">
+                            <g id="arrow_drop_up-24px" transform="translate(42.000000, 0.000000)">
+                                <polygon id="Path" points="4.66666667 6.66666667 8 3.33333333 11.3333333 6.66666667"></polygon>
+                                <polygon id="Path-Copy" transform="translate(8.000000, 11.000000) scale(1, -1) translate(-8.000000, -11.000000) " points="4.66666667 12.6666667 8 9.33333333 11.3333333 12.6666667"></polygon>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,244 @@
+<div class="p-container">
+    <div class="showForm">
+
+        <div class="header-row" style="display: flex;">
+            <div class="title"><img class="backBtn" [routerLink]="['/transfer-list']" src="../../assets/keyboard_backspace-24px (1).png" /> {{headerText}}</div>
+        </div>
+        <div class="page-content">
+            <!-- sale form -->
+            <div class="content">
+                <div class="form">
+                    <form [formGroup]="transferForm">
+                        <div class="transferForm">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="name list-label">PURCHASE ORDER #<span class="star">*</span></label>
+                                    <input type="text" class="form-control" style="font-weight: 700;" id="name" formControlName="transferOrderCode" disabled readonly>
+                                </div>
+                            
+                            <div class="form-group col-6">
+                                <label for="createdBy" style="color: #999999;">CREATED BY<span
+                                    class="star">*</span></label>
+                                <input type="text" class="form-control" id="createdBy" formControlName="createdBy">
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="location"> SOURCE WAREHOUSE <span class="star">*</span></label>
+                                <select class="form-control" id="location" formControlName="sourceWareHouse" >
+                                <option *ngFor="let warehouse of sourceWareHouse; let i = index" [value]="warehouse.wareHouseCode">
+                                    {{warehouse.wareHouseCode}}
+                                </option>
+                            </select>
+                                <div *ngIf="transferForm.get('sourceWareHouse').invalid && (transferForm.get('sourceWareHouse').dirty || transferForm.get('sourceWareHouse').touched)" class="customAlert">
+                                    <div *ngIf="transferForm.get('sourceWareHouse').errors.required">
+                                        Warehouse is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="location"> DESTINATION WAREHOUSE <span class="star">*</span></label>
+                                <select class="form-control" id="location" formControlName="destinationWareHouse" >
+                                <option *ngFor="let warehouse of destinationWareHouse; let i = index" [value]="warehouse.wareHouseCode">
+                                    {{warehouse.wareHouseCode}}
+                                </option>
+                            </select>
+                                <div *ngIf="transferForm.get('destinationWareHouse').invalid && (transferForm.get('destinationWareHouse').dirty || transferForm.get('destinationWareHouse').touched)" class="customAlert">
+                                    <div *ngIf="transferForm.get('destinationWareHouse').errors.required">
+                                        Warehouse is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group  col-6">
+                                <label for="dueDate">DUE DATE<span  class="star">*</span></label>
+                                <div class="input-group" >
+                                    <input  placeholder="Select" [min]="minDateValue" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control" [readonly]="(currentId!=null&&(type=='receive'||type=='view'))?true:null" formControlName="dueDate" id="dueDate">
+                                    <div  class="input-group-append" [owlDateTimeTrigger]="dt1" [disabled]="type=='view'">
+                                        <span  class="input-group-text" id="basic-addon1">
+                                            <img src="./assets/date_range-24px (1).png">
+                                        </span>
+
+                                    </div>
+                                </div>
+                                <div *ngIf="transferForm.get('dueDate').invalid && (transferForm.get('dueDate').dirty || transferForm.get('dueDate').touched)" class="text-danger">
+                                    <div *ngIf="transferForm.get('dueDate').errors.required">
+                                        Required.
+                                    </div>
+                                </div>
+                                <owl-date-time  #dt1 [pickerType]="'calendar'"></owl-date-time>
+                            </div>
+                            </div>
+                          
+                            
+                             <div class="row"> 
+                                
+                             </div> 
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="notes">NOTES</label>
+                                    <textarea class="form-control" id="notes" rows="3" #name="" formControlName="notes"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" >
+                            <div class="products">
+                                <div class="itemsContainer">
+                                    <table class="table list-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ITEM NUMBER</th>
+                                                <th style="min-width: 250px;">ITEM NAME</th>
+                                                <th>BATCH NUMBER</th>
+                                                <th>EXPIRY DATE</th>
+
+                                                <th>SIZE</th>
+                                                <th>AVAILABLE QTY</th>
+                                                <th>QTY</th>
+                                                <th>UOM</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container formArrayName="transferOrderItems" *ngFor="let item of transferForm.get('transferOrderItems')['controls']; let i = index;">
+                                                <ng-container [formGroupName]="i">
+                                                    <!-- [ngClass]="{ 'is-invalid': submitted && f.transferItems['controls'].errors }" -->
+                                                    <tr>
+                                                        <td>
+                                                            <ng-select [items]="productList" required (change)="selectProductNumber($event,item)" formControlName="itemNumber" bindValue="itemNumber" class="browser-default custom-select labelSelect" [virtualScroll]="true" [loading]="loading" bindLabel="itemNumber"
+                                                                (scroll)="onScroll($event)" placeholder="Select Product" appendTo="body" (scrollToEnd)="onScrollToEnd()">
+                                                                <ng-template ng-header-tmp>
+
+                                                                </ng-template>
+                                                                <ng-template ng-option-tmp let-product="item" let-index="index">
+                                                                    <div>{{product.itemNumber}}</div>
+                                                                </ng-template>
+                                                            </ng-select>
+                                                            <div *ngIf="item.get('itemNumber').invalid && (item.get('itemNumber').dirty || item.get('itemNumber').touched)" class="customAlert">
+                                                                <div *ngIf="item.get('itemNumber').errors.required">
+                                                                    Required.
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <ng-select [items]="productList" required (change)="selectProductName($event,item)" formControlName="itemName" bindValue="itemName" class="browser-default custom-select labelSelect" [virtualScroll]="true" [loading]="loading" bindLabel="itemName" placeholder="Select Product"
+                                                                appendTo="body" (scrollToEnd)="onScrollToEnd()">
+                                                                <ng-template ng-header-tmp>
+
+                                                                </ng-template>
+                                                                <ng-template ng-option-tmp let-product="item" let-index="index">
+                                                                    <div>{{product.itemName}} </div>
+                                                                </ng-template>
+                                                            </ng-select>
+                                                            <div *ngIf="item.get('itemName').invalid && (item.get('itemName').dirty || item.get('itemName').touched)" class="customAlert">
+                                                                <div *ngIf="item.get('itemName').errors.required">
+                                                                    Required.
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <ng-container >
+                                                                <!-- <input type="text" required class="form-control" id="lotNumber" formControlName="lotNumber" placeholder=""> -->
+
+                                                                <div *ngIf="item.get('lotNumber').invalid && (item.get('lotNumber').dirty || item.get('lotNumber').touched)" class="customAlert">
+                                                                    <div *ngIf="item.get('lotNumber').errors.required">
+                                                                        Required.
+                                                                    </div>
+                                                                </div>
+                                                            </ng-container>
+                                                            <ng-container >
+                                                                <select required class="form-control" style="min-width: 110px;" formControlName="lotNumber" (change)="lotSelected(item)">
+                                                                    <option *ngFor="let lot of item.get('lotNumbers').value" [value]="lot.lotNumber">{{lot.lotNumber}}</option>
+                                                                </select>
+                                                                <div *ngIf="item.get('lotNumber').invalid && (item.get('lotNumber').dirty || item.get('lotNumber').touched)" class="customAlert">
+                                                                    <div *ngIf="item.get('lotNumber').errors.required">
+                                                                        Required.
+                                                                    </div>
+                                                                </div>
+                                                                <label class="text-danger" style="white-space: nowrap;" *ngIf="noStock">No Stock Available</label>
+                                                            </ng-container>
+                                                        </td>
+                                                        <td [title]="item.get('expiryDate').value">
+
+                                                            <input placeholder="Select" required [owlDateTime]="dt1" readonly [owlDateTimeTrigger]="dt1" class="form-control" formControlName="expiryDate" id="expiryDate">
+                                                            <!-- <div class="input-group-append" [owlDateTimeTrigger]="dt1">
+                                                                <span class="input-group-text" id="basic-addon1" *ngIf="transferForm.get('transactionType').value!='Issue'">
+                                                                    <img src="./assets/date_range-24px (1).png">
+                                                                </span>
+                                                            </div> -->
+
+                                                            <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+
+                                                            <div *ngIf="item.get('expiryDate').invalid && (item.get('expiryDate').dirty || item.get('expiryDate').touched)" class="customAlert">
+                                                                <div *ngIf="item.get('expiryDate').errors.required">
+                                                                    Required.
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" required required class="form-control" id="size" readonly formControlName="size">
+                                                            <div *ngIf="item.get('size').invalid && (item.get('size').dirty || item.get('size').touched)" class="customAlert">
+                                                                <div *ngIf="item.get('size').errors.required">
+                                                                    Required.
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td >
+                                                            <input type="number" class="form-control" id="availableQty" formControlName="availableQty" disabled>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" required class="form-control" id="transferQuantity" formControlName="transferQuantity">
+                                                            <div *ngIf="item.get('transferQuantity').invalid && (item.get('transferQuantity').dirty || item.get('transferQuantity').touched)" class="customAlert">
+                                                                <div *ngIf="item.get('transferQuantity').errors.required">
+                                                                    Required.
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" required class="form-control" id="uom" formControlName="uom" placeholder="" disabled>
+
+                                                        </td>
+                                                        <td>
+                                                            <div class="item-close">
+                                                                <img src="../../assets/add-24px (1).png" (click)="removeItem(i)" />
+                                                            </div>
+    
+                                                        </td>
+                                                            <!-- <div *ngIf="item.get('showRemarks').value" class="commentBox"> -->
+                                                                <!-- <textarea class="form-control" name="description" formControlName="description" (click)="$event.stopPropagation()"></textarea> -->
+                                                            <!-- </div> -->
+                                                        <!-- </td> --> 
+                                                    </tr>
+                                                </ng-container>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                    <div *ngIf="f.transferOrderItems['controls'].invalid && (f.transferItems['controls'].dirty || f.transferItems['controls'].touched)" class="customAlert">
+                                        <div *ngIf="f.transferOrderItems['controls'].errors.required">
+                                            Transaction Details are required.
+                                        </div>
+                                    </div>
+
+                                    <div class="addlist" (click)="addItem()">Add Another</div>
+                                </div>
+                            </div>
+                            <!-- new changes for misc. transaction -->
+                        </div>
+                       
+                    </form> 
+                    <div class="footer-btns mt-2" >
+                        <div>
+                            <button type="button" class="btn btn-outline-secondary draft-btn" (click)="saveAsDraft(transferForm)">Save Draft</button>
+                        </div>
+                        <button type="button" class="btn btn-outline-secondary close-btn" [routerLink]="['/transfer-list']">Cancel</button>
+                        <button type="button" class="btn btn-save" [disabled]="!transferForm.valid" (click)="savetransferOrder(transferForm)"><span>Save Branch Transfer</span></button>
+                    </div>
+                    <div class="footer-right mt-2" *ngIf="type=='receive'">
+                        <button type="button" class="btn btn-outline-secondary mr-2 close-btn" [routerLink]="['/transfer-list']">Close</button>
+                        <button type="button" class="btn btn-save" (click)="recievetransferOrder(transferForm)"><span>Receive</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>   
+        
+    </div>
+    
+</div>

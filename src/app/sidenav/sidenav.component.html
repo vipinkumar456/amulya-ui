@@ -1,0 +1,82 @@
+<div class="nav-bar">
+    <div class="nav-icon"><img src="../../assets/logo (1)@2x.png"></div>
+    <ul>
+        <li>
+            <a class="routeInactive">
+                <!-- routerLink="/dashboard" routerLinkActive="active" -->
+                <div class="half-circle"></div>
+                <div class="icon"><img src="../../assets/Dashboard-Active.png"></div>Dashboard
+            </a>
+        </li>
+        <li>
+            <a (click)="showSubNav()" routerLinkActive="active">
+                <div class="half-circle"></div>
+                <div class="icon">
+                    <img src="../../assets/inventory-Inactive.png">
+                    <!-- <img src="../../assets/Inventory-active.png"> -->
+                </div>Inventory<span style="margin-left: 62px;"><svg width="15px" height="10px" viewBox="0 0 16 16"
+                        class="bi bi-caret-down-fill" fill="#768198" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg></span>
+            </a>
+        </li>
+        <ul class="sub-nav" *ngIf="showList">
+            <li><a routerLink="/category" routerLinkActive="active">Product Category</a></li>
+            <li><a routerLink="/list" routerLinkActive="active">Product</a></li>
+            <li><a routerLink="/miscTransactions" routerLinkActive="active">Non Sales Orders</a></li>
+            <li><a routerLink="/inventory" routerLinkActive="active">Stock On Hand</a></li>
+            <li><a routerLink="/transfer-list" routerLinkActive="active">Branch Transfer</a></li>
+        </ul>
+        <li>
+            <a class="routeInactive">
+                <div class="icon"><img src="../../assets/Customer-Inactive.png"></div>Customers
+            </a>
+        </li>
+        <li>
+            <a class="" routerLink="/sales" routerLinkActive="active">
+                <div class="icon"><img src="../../assets/sales-Inactive.png"></div>Sales
+            </a>
+        </li>
+        <li>
+            <a routerLink="/vendor" routerLinkActive="active">
+                                <!-- routerLink="/vendor" routerLinkActive="active" -->
+                <div class="half-circle"></div>
+                <div class="icon"><img class="inactive-img" src="../../assets/Vendor-inactive.png"><img class="active-img" src="../../assets/vendor-active.png"></div>Vendor
+            </a>
+        </li>
+        <li>
+            <a class="" routerLink="/purchases" routerLinkActive="active">
+                <div class="half-circle"></div>
+                <div class="icon"><img class="inactive-img" src="../../assets/purchases-inactive.png"><img class="active-img" src="../../assets/Purchase-Active.png"></div>Purchases
+            </a>
+        </li>
+        <li>
+            <a>
+                <div class="icon"><img src="../../assets/reports-inactive.png"></div>Reports
+            </a>
+        </li>
+        <li>
+            <a class="routeInactive">
+                <div class="icon"><img src="../../assets/Admin-inactive.png"></div>Administrator
+            </a>
+        </li>
+        <li>
+            <a routerLink="/distributors">
+                <div class="icon"><img src="../../assets/Admin-inactive.png"></div>Distributor
+            </a>
+        </li>
+        <ul class="sub-nav" *ngIf="showList">
+            <li><a routerLink="/category" routerLinkActive="active">Product Category</a></li>
+            <li><a routerLink="/list" routerLinkActive="active">Product</a></li>
+            <li><a routerLink="/miscTransactions" routerLinkActive="active">Non Sales Orders</a></li>
+            <li><a routerLink="/inventory" routerLinkActive="active">Stock On Hand</a></li>
+            <li><a routerLink="/transfer-list" routerLinkActive="active">Branch Transfer</a></li>
+        </ul>
+        <li>
+            <a class="routeInactive">
+                <div class="icon"><img src="../../assets/Group.png"></div>Settings
+            </a>
+        </li>
+    </ul>
+</div>
