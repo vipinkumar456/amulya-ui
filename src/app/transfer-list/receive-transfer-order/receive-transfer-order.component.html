@@ -1,0 +1,147 @@
+<div class="p-container">
+    <div class="showForm">
+
+        <div class="header-row" style="display: flex;">
+            <div class="title"><img class="backBtn" [routerLink]="['/transfer-list']" src="../../assets/keyboard_backspace-24px (1).png" /> {{headerText}}</div>
+        </div>
+        <div class="page-content">
+            <!-- purchase form -->
+            <div class="content">
+                <div class="form">
+                    <form [formGroup]="purchaseForm">
+                        <div class="purchaseForm">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="name list-label">Transfer Order #<span class="star">*</span></label>
+                                    <input type="text" class="form-control" style="font-weight: 700;" id="name" formControlName="transferOrderCode" disabled>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="dueDate">RECEIVED DATE<span class="star">*</span></label>
+                                    <div class="input-group">
+                                        <input placeholder="Select" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" class="form-control" formControlName="receivedDate" id="receivedDate" required>
+                                        <div class="input-group-append" [owlDateTimeTrigger]="dt2">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <img src="./assets/date_range-24px (1).png">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="purchaseForm.get('receivedDate').invalid && (purchaseForm.get('receivedDate').dirty || purchaseForm.get('receivedDate').touched)" class="text-danger">
+                                        <div *ngIf="purchaseForm.get('receivedDate').errors.required">
+                                            Required.
+                                        </div>
+                                    </div>
+                                    <owl-date-time #dt2 [pickerType]="'calendar'"></owl-date-time>
+                                    <!-- <input type="date" class="form-control" id="dueDate" formControlName="receivedDate" value="{{purchaseForm.controls['receivedDate'].value | date:'yyyy-MM-dd'}}"> -->
+                                </div>
+                                <!-- <div class="form-group col-6" *ngIf="type!='receive'">
+                                    <label for="createdBy" style="color: #999999;">CREATED BY<span
+                                    class="star">*</span></label>
+                                    <input type="text" class="form-control" id="createdBy" formControlName="createdBy">
+                                </div> -->
+                            </div>
+                    
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="name list-label">Source Ware House #<span class="star">*</span></label>
+                                    <input type="text" class="form-control" style="font-weight: 700;" id="name" formControlName="sourceWareHouse" disabled>
+                                </div>
+                         
+                                <div class="form-group col-6">
+                                    <label for="name list-label">Destination Ware House #<span class="star">*</span></label>
+                                    <input type="text" class="form-control" style="font-weight: 700;" id="name" formControlName="destinationWareHouse" disabled>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="type!='receive'">
+                                <div class="form-group col-6">
+                                    <label for="notes">NOTES</label>
+                                    <textarea class="form-control" [readonly]="type=='view'" id="notes" rows="3" #name="" formControlName="notes"></textarea>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div class="products">
+                            <div class="itemsContainer" style="overflow-x:scroll;">
+                             
+
+
+                                <table  class="table list-table">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th>ITEM DETAILS</th> -->
+                                            <th style="min-width:200px;">Item Name</th>
+                                            <th style="min-width:100px;">Item Number</th>
+                                            <th style="min-width:100px;">QTY TRANSFERRED</th>
+                                            <th style="min-width:100px;">QTY RECEIVED</th>
+                                            <th style="min-width:100px;">LOT NUMBER</th>
+                                            <th style="min-width:150px;">EXP DATE</th>
+                                            <!-- <th style="min-width:150px;">TOTAL</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container class="rows" formArrayName="transferOrderItems" *ngFor="let item of purchaseForm.get('transferOrderItems')['controls']; let i = index;">
+                                            <ng-container [formGroupName]="i">
+                                               
+                                                <tr>
+                                                    <td >
+
+                                                       {{item.get('itemNumber').value}}
+
+                                                    </td>
+                                                    <td >
+
+                                                      {{item.get('itemName').value}}
+
+                                                    </td>
+                                                    <td>
+                                                        <!-- {{item.get('receivedQuantity').value}} -->
+                                                        <input type="number" class="form-control" name="transferQuantity" disabled minone formControlName="transferQuantity" placeholder="Qty" >
+                                                    </td>
+                                                    <td>
+                                                        <!-- {{item.get('receivedQuantity').value}} -->
+                                                        <input type="number" class="form-control" name="receivedQuantity" minone formControlName="receivedQuantity" placeholder="Qty" >
+                                                    </td>
+                                                 
+                                               
+                                                    <td>{{item.get('lotNumber').value}}</td>
+                                                    <td class="form-group">
+                                                        <div class="input-group">
+                                                            <input placeholder=""  [owlDateTime]="dt3" readonly [owlDateTimeTrigger]="dt3" [min]="item.get('expiryDate').value" class="form-control" formControlName="expiryDate" id="expiryDate">
+                                                            <owl-date-time #dt3 disabled  [pickerType]="'calendar'" [startView]="'multi-years'"></owl-date-time>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-container>
+                                    </tbody>
+                                    <!-- <tfoot>
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="addlist" (click)="addItem()">Add Another</div>
+                                            </td>
+                                            <td style="min-width: 110px;">
+                                                <b>Grand Total</b>
+                                            </td>
+                                            <td><b style="white-space: nowrap;">₹ {{purchaseForm.get('totalInvoiceAmount').value}} </b></td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot> -->
+                                </table>
+                            
+
+                                <div class="table-btm">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+               
+                    <div class="footer-right mt-2" >
+                        <button type="button" class="btn btn-outline-secondary mr-2 close-btn" [routerLink]="['/transfer-list']">Close</button>
+                        <button type="button" class="btn btn-save" (click)="recievePurchaseOrder(purchaseForm)"><span>Receive</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

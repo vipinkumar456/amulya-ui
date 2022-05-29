@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon-left@1x</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Inventory" transform="translate(-1150.000000, -1192.000000)">
+            <g id="Group-12" transform="translate(280.000000, 146.000000)">
+                <g id="Group-11">
+                    <g id="Group-17" transform="translate(866.000000, 1042.000000)">
+                        <g id="Group-15-Copy-6">
+                            <g id="Group-16">
+                                <g id="Group-18">
+                                    <g id="icon-left" transform="translate(14.000000, 14.000000) scale(-1, 1) translate(-14.000000, -14.000000) translate(4.000000, 4.000000)">
+                                        <polygon id="Path" points="0 0 20 0 20 20 0 20"></polygon>
+                                        <polygon id="Path" fill="#ECECEC" fill-rule="nonzero" points="8.35 5 7.175 6.175 10.9916667 10 7.175 13.825 8.35 15 13.35 10"></polygon>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

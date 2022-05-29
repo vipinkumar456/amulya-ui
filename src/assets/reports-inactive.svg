@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>reports-inactive</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Dashboard---v2" transform="translate(-20.000000, -446.000000)">
+            <g id="SideBar">
+                <g id="Group-3" transform="translate(0.000000, 90.000000)">
+                    <g id="Group-2-Copy-9" transform="translate(0.000000, 348.000000)">
+                        <g id="reports-inactive" transform="translate(20.000000, 8.000000)">
+                            <g id="pie_chart-24px-(2)" transform="translate(4.000000, 4.000000)">
+                                <polygon id="Path" points="0 0 24 0 24 24 0 24"></polygon>
+                                <path d="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M19.93,11 L13,11 L13,4.07 C16.61,4.52 19.48,7.39 19.93,11 Z M4,12 C4,7.93 7.06,4.56 11,4.07 L11,19.93 C7.06,19.44 4,16.07 4,12 Z M13,19.93 L13,13 L19.93,13 C19.48,16.61 16.61,19.48 13,19.93 Z" id="Shape" fill="#D6D6D6" fill-rule="nonzero"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

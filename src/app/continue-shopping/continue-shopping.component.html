@@ -1,0 +1,86 @@
+<main>
+    <div class="container topContainer" >
+        <div class="content" style="width: 100%;">
+            <div class="col-left">
+                <div  *ngIf="cartProduct?.length==0">
+                <div class="container">
+                    <div class="card">
+                    </div>
+                    <div class="center">
+                        <img src="https://rukminim1.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"
+                            alt="">
+                        <h4>Your Cart Is Empty</h4>
+                        <h6>Add item to it now</h6>
+                        <button routerLink="/Product" class="shop-now">Shop Now</button>
+                    </div>
+                </div>
+                </div>
+                <div class="product-cart" *ngIf="cartProduct?.length!=0">
+
+                
+                <h3 style="font-weight: bolder;">Shopping Cart</h3>
+                <p class="productincart ng-star-inserted" >({{cartProductLength}} Product in cart)</p>
+                  <div class="container">
+                    <div class="card-table">
+                        <div class="card-product">
+                            <table class="table table-responsive cart-table">
+                                <thead>
+                                    <tr>
+                                        <th>S.no</th>
+                                        <th>Product Name</th>
+                                        <th>Product Image</th>
+                                        
+                                        <th>Quantity</th>
+                                        <th>Total Price</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of cartProduct; let i= index">
+                                        <td>{{i+1}}</td>
+                                        <td>{{item.productName}}</td>
+                                        <td><img style="width: 50%;" src="{{item.productImage}}" alt=""> </td>
+                                        <td>{{item.quantity}}</td>
+                                        <td>{{item.mrp}}</td>
+                                        <td>
+                                            <button  class="btn" (click)="removeFromCart(item)">
+                                                <img
+                                                src="../../assets/Delete@2x.png">
+                                            </button>
+                                        </td>
+            
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            
+                </div>
+             
+                </div>
+            </div>
+            <div class="col-right" style="margin-top: 55px;">
+            <div class="card">
+                <div  class="card-body">
+                    <h4 style="font-weight: 600;padding-bottom: 7px;border-bottom: 2px dashed #eee;">Cart Summary</h4>
+                    <div class="row mt-3">
+                        <div  class="col-md-6">
+                            <p >Subtotal</p>
+                            <p >Total</p>
+                        </div>
+                        <div  class="col-md-6 amount">
+                            <p >₹ {{cartTotalPrice}}</p>
+                            <p  class="total">₹ {{cartTotalPrice}}</p>
+                        </div>
+                    </div>
+                    <div class="checkbtn-div">
+                        <button  class="btn checkoutbtn" tabindex="0" [routerLink]="['/payentmethod']">Proceed to checkout</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>

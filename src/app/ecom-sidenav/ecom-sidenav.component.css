@@ -1,0 +1,26 @@
+
+.shopping-nav-bar{
+    justify-content: center;
+    /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
+    position: sticky;
+    display: block;  
+    top: 10px;   
+/* border: none; */
+}
+
+ul{
+    list-style: none;
+    padding: 30px 20px 20px 20px;
+    /* margin-bottom: 90px; */
+}
+
+li{
+    font-weight: 500;
+    font-size: 14px;
+    padding: 15px;
+    color: #cad7da;
+}
+:host
+{
+    
+}

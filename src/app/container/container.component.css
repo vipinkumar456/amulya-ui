@@ -1,0 +1,18 @@
+.page {
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+}
+
+.page .main-content {
+    height: inherit;
+    width: calc(100% - 250px);
+    background: #EBEDEF;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.page .content {
+    padding: 30px 30px 30px 30px;
+    min-height: calc(100vh - 60px);
+}

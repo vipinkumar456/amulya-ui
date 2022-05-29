@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Alert</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Dashboard---v2" transform="translate(-320.000000, -591.000000)">
+            <g id="Group-10-Copy-4" transform="translate(280.000000, 506.000000)">
+                <g id="Group-23" transform="translate(20.000000, 73.000000)">
+                    <g id="Group-22">
+                        <g id="Group-21" transform="translate(20.000000, 12.000000)">
+                            <g id="Alert">
+                                <rect id="Rectangle" fill="#FFBB63" x="0" y="0" width="40" height="40" rx="20"></rect>
+                                <g id="warning-24px-(1)" transform="translate(10.000000, 10.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                                    <path d="M2.47,18 L17.53,18 C19.07,18 20.03,16.33 19.26,15 L11.73,1.99 C10.96,0.66 9.04,0.66 8.27,1.99 L0.74,15 C-0.03,16.33 0.93,18 2.47,18 Z M10,11 C9.45,11 9,10.55 9,10 L9,8 C9,7.45 9.45,7 10,7 C10.55,7 11,7.45 11,8 L11,10 C11,10.55 10.55,11 10,11 Z M11,15 L9,15 L9,13 L11,13 L11,15 Z" id="Shape"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

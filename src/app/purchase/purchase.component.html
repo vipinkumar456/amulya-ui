@@ -1,0 +1,485 @@
+<div class="p-container">
+    <div class="showForm">
+
+        <div class="header-row" style="display: flex;">
+            <div class="title"><img class="backBtn" [routerLink]="['/purchases']" src="../../assets/keyboard_backspace-24px (1).png" /> {{headerText}}</div>
+        </div>
+        <div class="page-content">
+            <!-- purchase form -->
+            <div class="content">
+                <div class="form">
+                    <form [formGroup]="purchaseForm">
+                        <div class="purchaseForm">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="name list-label">PURCHASE ORDER #<span class="star">*</span></label>
+                                    <input type="text" class="form-control" style="font-weight: 700;" id="name" formControlName="purchaseOrderCode" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="vendor">SELECT VENDOR<span class="star">*</span></label>
+                                    <select class="form-control" id="vendor" formControlName="vendorName" #vendorselect (change)="onVendorSelection($event.target.value)">
+                                        <option *ngFor="let vendor of vendors; let i = index" [value]="vendor.vendorName">
+                                            {{vendor.vendorName}}
+                                        </option>
+                                    </select>
+                                    <!-- <ng-select [items]="vendors" class="form-control" (change)="onVendorSelection($event)" formControlName="vendorName" bindValue="vendorName" class="browser-default custom-select labelSelect" [virtualScroll]="true" [loading]="loading" bindLabel="vendorName" placeholder="Select Vendor"
+                                    appendTo="body">
+                                    
+                                     </ng-select> -->
+                                    
+                                    <div *ngIf="purchaseForm.get('vendorName').invalid && (purchaseForm.get('vendorName').dirty || purchaseForm.get('vendorName').touched)" class="text-danger">
+                                        <div *ngIf="purchaseForm.get('vendorName').errors.required">
+                                            Required.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-6" *ngIf="type!='receive'">
+                                    <label for="city">ORDER TO WAREHOUSE <span class="star">*</span></label>
+                                    <select class="form-control" id="location" required formControlName="wareHouse" #cityselect>
+                                        <option *ngFor="let warehouse of warehouses; let i = index" [value]="warehouse">
+                                            {{warehouse}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="purchaseForm.get('wareHouse').invalid && (purchaseForm.get('wareHouse').dirty || purchaseForm.get('wareHouse').touched)" class="text-danger">
+                                        <div *ngIf="purchaseForm.get('wareHouse').errors.required">
+                                            Required.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-6" *ngIf="type!='receive'">
+                                    <label for="createdBy" style="color: #999999;">CREATED BY<span
+                            class="star">*</span></label>
+                                    <input type="text" class="form-control" id="createdBy" formControlName="createdBy">
+                                </div>
+                                <div class="form-group  col-6">
+                                    <label for="dueDate">DUE DATE<span class="star">*</span></label>
+                                    <div class="input-group">
+                                        <input placeholder="Select"   [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control" [readonly]="(currentId!=null&&(type=='receive'||type=='view'))?true:null" formControlName="dueDate" id="dueDate">
+                                        <div class="input-group-append" [owlDateTimeTrigger]="dt1" [disabled]="type=='view'">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <img src="./assets/date_range-24px (1).png">
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                    <div *ngIf="purchaseForm.get('dueDate').invalid && (purchaseForm.get('dueDate').dirty || purchaseForm.get('dueDate').touched)" class="text-danger">
+                                        <div *ngIf="purchaseForm.get('dueDate').errors.required">
+                                            Required.
+                                        </div>
+                                    </div>
+                                    <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+                                </div>
+                                <div class="form-group  col-6" *ngIf="type=='receive'">
+                                    <label for="dueDate">ORDER DATE</label>
+                                    <div class="input-group">
+                                        <input placeholder="Order Date" [owlDateTime]="dt5" [owlDateTimeTrigger]="dt5" class="form-control" formControlName="orderDate" id="orderDate">
+                                        <div class="input-group-append" disabled>
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <img src="./assets/date_range-24px (1).png">
+                                            </span>
+
+                                        </div>
+                                        <owl-date-time #dt5 [pickerType]="'calendar'"></owl-date-time>
+                                    </div>
+                                </div>
+                                <div class="form-group col-6" *ngIf="type=='receive'">
+                                    <label for="dueDate">RECEIVED DATE<span class="star">*</span></label>
+                                    <div class="input-group">
+                                        <input placeholder="Select" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" class="form-control" formControlName="receivedDate" id="receivedDate" required>
+                                        <div class="input-group-append" [owlDateTimeTrigger]="dt2">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <img src="./assets/date_range-24px (1).png">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="purchaseForm.get('receivedDate').invalid && (purchaseForm.get('receivedDate').dirty || purchaseForm.get('receivedDate').touched)" class="text-danger">
+                                        <div *ngIf="purchaseForm.get('receivedDate').errors.required">
+                                            Required.
+                                        </div>
+                                    </div>
+                                    <owl-date-time #dt2 [pickerType]="'calendar'"></owl-date-time>
+                                    <!-- <input type="date" class="form-control" id="dueDate" formControlName="receivedDate" value="{{purchaseForm.controls['receivedDate'].value | date:'yyyy-MM-dd'}}"> -->
+                                </div>
+                                <div class="form-group col-6" *ngIf="type=='receive'">
+                                    <label for="invoiceNumber list-label">INVOICE NUMBER<span class="star">*</span></label>
+                                    <input type="text" class="form-control" id="invoiceNumber" required formControlName="invoiceNumber">
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="type!='receive'">
+                                <div class="form-group col-6">
+                                    <label for="notes">NOTES</label>
+                                    <textarea class="form-control" [readonly]="type=='view'" id="notes" rows="3" #name="" formControlName="notes"></textarea>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="paymentTerms">PAYMENT TERMS</label>
+                                    <textarea class="form-control" id="paymentTerms" rows="3" #name="" formControlName="paymentTerms"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="products">
+                            <div class="itemsContainer" style="overflow-x:scroll;">
+                                <table *ngIf="type!='receive' && type!='view'" class="table list-table">
+                                    <thead>
+                                        <tr>
+                                            <th>AMULYA CODE</th>
+                                            <th style="min-width: 250px;">PRODUCT Name</th>
+                                            <th style="min-width: 100px;">QTY</th>
+                                            <th style="min-width: 140px;">UOM</th>
+                                            <th style="min-width: 100px;">MRP</th>
+                                            <th style="min-width: 100px;">BV</th>
+                                            <th style="min-width: 100px;">DP</th>
+                                            <th style="min-width: 120px;">HSN</th>
+                                            <!-- <th style="min-width: 150px;">TAX AMOUNT</th> -->
+                                            <th style="min-width: 150px;">TOTAL</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container class="rows" formArrayName="purchaseOrderItems" *ngFor="let item of purchaseForm.get('purchaseOrderItems')['controls']; let i = index;">
+                                            <ng-container [formGroupName]="i">
+                                                <tr>
+                                                    <td>
+                                                        <ng-select *ngIf="!vendorOtherFlag" [items]="productList" (change)="selectProductNumber($event,item)" formControlName="itemNumber" bindValue="itemNumber" class="browser-default custom-select labelSelect" [virtualScroll]="true" [loading]="loading" bindLabel="itemNumber" placeholder="Select Product"
+                                                            appendTo="body" (scrollToEnd)="onScrollToEnd()">
+                                                            <ng-template ng-header-tmp>
+                                                                <!-- <small class="form-text text-muted">Loaded {{vesselsBuffer.length}} of {{data.vessels.length}}</small> -->
+                                                            </ng-template>
+                                                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                                                <div>{{item.itemNumber}} </div>
+                                                            </ng-template>
+                                                        </ng-select>
+
+                                                        <input *ngIf="vendorOtherFlag" class="form-control" type="text" formControlName="itemNumber" >
+
+                                                        <div *ngIf="item.get('itemNumber').invalid && (item.get('itemNumber').dirty || item.get('itemNumber').touched)" class="text-danger">
+                                                            <div *ngIf="item.get('itemNumber').errors.required">
+                                                                Required.
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td style="min-width: 35%;">
+                                                        <ng-select *ngIf="!vendorOtherFlag" [items]="productList" (change)="selectProductName($event,item)" formControlName="itemName" bindValue="itemName" class="browser-default custom-select labelSelect" [virtualScroll]="true" [loading]="loading" bindLabel="itemName" placeholder="Select Product Name"
+                                                            appendTo="body" (scrollToEnd)="onScrollToEnd()">
+                                                            <ng-template ng-header-tmp>
+                                                                <!-- <small class="form-text text-muted">Loaded {{vesselsBuffer.length}} of {{data.vessels.length}}</small> -->
+                                                            </ng-template>
+                                                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                                                <div>{{item.itemName}} </div>
+                                                            </ng-template>
+                                                        </ng-select>
+                                                        <input *ngIf="vendorOtherFlag" class="form-control" type="text" formControlName="itemName" >
+
+                                                        <div *ngIf="item.get('itemName').invalid && (item.get('itemName').dirty || item.get('itemName').touched)" class="text-danger">
+                                                            <div *ngIf="item.get('itemName').errors.required">
+                                                                Required.
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control quantity" id="quantity" formControlName="quantity" placeholder="" (input)="calculateAmount(item)">
+                                                        <div *ngIf="item.get('quantity').invalid && (item.get('quantity').dirty || item.get('quantity').touched)" class="text-danger">
+                                                            <div *ngIf="item.get('quantity').errors.required">
+                                                                Required.
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control " id="uom" placeholder="" formControlName="uom">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control " id="price" placeholder="" disabled formControlName="price">
+
+                                                    </td>
+                                                    <!-- placed here -->
+                                                    <td>
+                                                        <input type="text" class="form-control " id="bv" placeholder="" disabled formControlName="bv">
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control " id="dp" placeholder="" disabled formControlName="dp">
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control " id="hsn" placeholder="" disabled formControlName="hsn">
+
+                                                    </td>
+                                                    <!-- <td>
+                                                        <input type="text" class="form-control " id="taxamount" placeholder="" disabled formControlName="taxAmount">
+
+                                                    </td> -->
+
+                                                    <td>
+                                                        <input type="text" class="form-control " id="itemAmount" placeholder="" disabled formControlName="itemAmount">
+                                                        <!-- {{item.get('itemAmount').value}} -->
+
+                                                    </td>
+                                                    <td>
+                                                        <div class="item-close">
+                                                            <img src="../../assets/cancel.png" (click)="removeItem(i)" height="18" />
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-container>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4">
+                                                <button class="btn btn-save" (click)="addItem()">Add Another</button>
+                                            </td>
+                                            <td style="min-width: 126px;">
+                                                <b>GRAND TOTAL</b>
+                                            </td>
+                                            <td nwrap><b>₹ {{purchaseForm.get('totalAmount').value}} </b></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+
+                                <table *ngIf="type=='receive'" class="table list-table receive">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th>ITEM DETAILS</th> -->
+                                            <th style="min-width:200px;">BATCH NUMBER</th>
+                                            <th style="min-width:100px;">QTY ORDERED</th>
+                                            <th style="min-width:140px;">UOM</th>
+                                            <th style="min-width:100px;">QTY RECEIVED</th>
+                                            <th style="min-width:100px;">INVOICE QTY</th>
+                                            <th style="min-width:100px;">QTY RETURNED</th>
+                                            <!-- <th>QTY INVOICED</th> -->
+                                            <!-- <th>MFG DATE</th> -->
+                                            <th style="min-width:150px;">EXP DATE</th>
+                                            <th style="min-width:100px;">RATE</th>
+                                            <th style="min-width:100px;">INVOICE RATE</th>
+                                            <th style="min-width:200px;">COMMENTS</th>
+                                            <th style="min-width:150px;">TOTAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container class="rows" formArrayName="purchaseOrderItems" *ngFor="let item of purchaseForm.get('purchaseOrderItems')['controls']; let i = index;">
+                                            <ng-container [formGroupName]="i">
+                                                <tr>
+                                                    <td colspan="11">
+
+                                                        <b>ITEM DETAILS</b> {{item.get('itemName').value}}
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <!-- <td style="min-width: 25%;">
+                                                        {{item.get('itemName').value}}
+                                                    </td> -->
+                                                    <td>
+                                                        <input type="text" class="form-control" id="quantity" formControlName="lotNumber" placeholder="BATCH NUMBER">
+                                                    </td>
+                                                    <td>{{item.get('quantity').value}}</td>
+                                                    <td>
+                                                        {{item.get('uom').value}}
+                                                    </td>
+                                                    <td>
+                                                        <!-- {{item.get('receivedQuantity').value}} -->
+                                                        <input type="number" class="form-control" name="receivedQuantity" minone formControlName="receivedQuantity" placeholder="Qty" (input)="calculateFinalAmount(item)">
+                                                    </td>
+                                                    <td>
+                                                        <!-- {{item.get('receivedQuantity').value}} -->
+                                                        <input type="number" class="form-control" name="invoiceQuantity" minone formControlName="invoiceQuantity" placeholder="Invoice Quantity">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control" formControlName="returnedQuantity" minone placeholder="Qty">
+                                                    </td>
+                                                    <!-- <td>
+                                                        <input type="number" class="form-control" id="quyInvoiced" placeholder="Qty">
+                                                    </td> -->
+                                                    <!-- <td>
+                                                        <div class="input-group">
+                                                            <input placeholder="" [owlDateTime]="dt4" [owlDateTimeTrigger]="dt4" class="form-control" formControlName="manufacturingDate" id="manufacturingDate">
+                                                            <owl-date-time #dt4 [pickerType]="'calendar'"></owl-date-time>
+                                                        </div>
+                                                    </td> -->
+                                                    <td class="form-group">
+                                                        <div class="input-group">
+                                                            <input placeholder="" [owlDateTime]="dt3" [owlDateTimeTrigger]="dt3" [min]="item.get('manufacturingDate').value" class="form-control" formControlName="expiryDate" id="expiryDate">
+                                                            <owl-date-time #dt3 [pickerType]="'calendar'" [startView]="'multi-years'"></owl-date-time>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <!-- {{item.get('price').value}} -->
+                                                        <input type="text" class="form-control " name="price" placeholder="price" formControlName="price" (input)="calculateFinalAmount(item)">
+
+                                                    </td>
+                                                    <td>
+                                                        <!-- {{item.get('price').value}} -->
+                                                        <input type="text" class="form-control " name="invoicePrice" placeholder="Invoice Price" formControlName="invoicePrice">
+
+                                                    </td>
+                                                    <td>
+                                                        <!-- {{item.get('price').value}} -->
+                                                        <input type="text" class="form-control " name="comments" placeholder="Comments" formControlName="comments">
+
+                                                    </td>
+                                                    <td>
+                                                        <!-- {{item.get('invoicePrice').value}} -->
+                                                        <input type="number" class="form-control" id="invoicePrice" disabled formControlName="invoicePrice" placeholder="Price" (input)="calculateInvoiceAmount()">
+
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-container>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="9">
+                                                <!-- <div class="addlist" (click)="addItem()">Add Another</div> -->
+                                            </td>
+                                            <td style="min-width: 110px;">
+                                                <b>Grand Total</b>
+                                            </td>
+                                            <td><b style="white-space: nowrap;">₹ {{purchaseForm.get('totalInvoiceAmount').value}} </b></td>
+                                            <!-- <td></td> -->
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <table *ngIf="type=='view'" class="table list-table receive">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th>ITEM DETAILS</th> -->
+                                            <th>BATCH NUMBER</th>
+                                            <th style="min-width:100px">QTY ORDERED</th>
+                                            <th style="min-width:140px">UOM</th>
+                                            <th style="min-width:100px">QTY RECEIVED</th>
+                                            <th style="min-width:100px">QTY RETURNED</th>
+                                            <th style="min-width:100px">MRP</th>
+                                            <th style="min-width: 100px;">BV</th>
+                                            <th style="min-width: 100px;">DP</th>
+                                            <th style="min-width: 120px;">HSN</th>
+                                            <!-- <th style="min-width: 100px;">TAX AMOUNT</th> -->
+                                            <th style="min-width:100px">MFG DATE</th>
+                                            <th style="min-width:100px">EXP DATE</th>
+                                            <!-- <th>RATE</th> -->
+                                            <th style="min-width:150px">TOTAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container class="rows" formArrayName="purchaseOrderItems" *ngFor="let item of purchaseForm.get('purchaseOrderItems')['controls']; let i = index;">
+                                            <ng-container [formGroupName]="i">
+                                                <tr>
+                                                    <td colspan="8">
+
+                                                        <b>ITEM DETAILS</b> {{item.get('itemName').value}}
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+
+                                                    <td>
+                                                        <!-- {{item.get('lotNumber').value}} -->
+                                                        <input  class="form-control" type="text" formControlName="lotNumber" disabled>
+                                                        
+                                                    </td>
+
+                                                    <td>
+                                                        <!-- {{item.get('quantity').value}} -->
+                                                        <input  class="form-control" type="text" formControlName="quantity" disabled>
+                                                    </td>
+                                                    <td>
+                                                        <!-- {{item.get('uom').value}} -->
+                                                        <input  class="form-control" type="text" formControlName="uom" disabled>
+                                                    </td>
+                                                    <td>
+                                                        <!-- {{item.get('receivedQuantity').value}} -->
+                                                        <input  class="form-control" type="text" formControlName="receivedQuantity" disabled>
+                                                    </td>
+                                                    <td>
+                                                        <!-- {{item.get('returnedQuantity').value}} -->
+                                                        <input  class="form-control" type="text" formControlName="returnedQuantity" disabled>
+                                                        
+                                                    </td>
+                                                    <td>
+                                                    <input type="text" class="form-control " id="price" placeholder="" disabled formControlName="price">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control " id="bv" placeholder="" disabled formControlName="bv">
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control " id="dp" placeholder="" disabled formControlName="dp">
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control " id="hsn" placeholder="" disabled formControlName="hsn">
+
+                                                    </td>
+                                                    <!-- <td>
+                                                        <input type="text" class="form-control " id="taxamount" placeholder="" disabled formControlName="taxAmount">
+
+                                                    </td> -->
+                                                     <td>
+                                                        {{item.get('manufacturingDate').value | date:'DD-MM-YYYY'}}
+                                                        <!-- <input  class="form-control" type="text"  formControlName="manufacturingDate" disabled> -->
+                                                    </td>
+                                                    <td>
+                                                        {{item.get('expiryDate').value | date:'dd-MM-yyyy'}}
+                                                        <!-- <input  class="form-control" type="text" formControlName="expiryDate" disabled> -->
+
+                                                    </td>
+                                                    <!-- <td>
+                                                        {{item.get('price').value}}
+
+                                                    </td> -->
+                                                    <td>
+                                                        <!-- {{item.get('itemAmount').value}} -->
+                                                        <input  class="form-control" type="text" formControlName="itemAmount" disabled>
+                                                        
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-container>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="6">
+                                                <!-- <div class="addlist" (click)="addItem()">Add Another</div> -->
+                                            </td>
+                                            <td style="min-width: 110px;">
+                                                <b>Grand Total</b>
+                                            </td>
+                                            <td nowrap><b style="white-space: nowrap;">₹ {{purchaseForm.get('totalAmount').value}}  </b></td>
+                                            <!-- <td></td> -->
+                                            <!-- <td><b>₹ {{purchaseForm.get('totalInvoiceAmount').value}}</b></td> -->
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                                <div class="table-btm">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                    <div class="footer-btns mt-2" *ngIf="type!='receive'&&type!='view'">
+                        <div>
+                            <button *ngIf="type!='edit'" type="button" class="btn btn-outline-secondary draft-btn" (click)="saveAsDraft()">Save Draft</button>
+                        </div>
+                        <button type="button" class="btn btn-outline-secondary close-btn" [routerLink]="['/purchases']">Cancel</button>
+                        <button type="button" class="btn btn-save" [disabled]="!purchaseForm.valid" (click)="savePurchaseOrder(purchaseForm)"><span>Save Purchase Order</span></button>
+                    </div>
+                    <div class="footer-right mt-2" *ngIf="type=='receive'">
+                        <button type="button" class="btn btn-outline-secondary mr-2 close-btn" [routerLink]="['/purchases']">Close</button>
+                        <button type="button" class="btn btn-save" (click)="recievePurchaseOrder(purchaseForm)"><span>Receive</span></button>
+                    </div>
+                    <div class="footer-right mt-2" *ngIf="type=='view'">
+                        <button type="button" class="btn btn-outline-secondary mr-2 close-btn" [routerLink]="['/purchases']">Close</button>
+                        <!-- <button type="button" class="btn btn-save" (click)="recievePurchaseOrder(purchaseForm)"><span>Receive</span></button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

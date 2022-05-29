@@ -1,0 +1,30 @@
+.logo{
+    max-width: 100px;
+}
+
+.navbar{ 
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    padding: 0px 45px;
+
+}
+
+.cart-notification{
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+    background: #7038f8;
+    cursor: pointer;
+    position: absolute;
+    top: 17px;
+    right: 236px;
+  
+}
+.notification-text{
+
+    color: white;
+    transform: translateY(-10%);
+    position: absolute;
+    right: 4px;
+    top: 0px;
+
+}

@@ -1,0 +1,247 @@
+<div *ngIf="showProductList">
+    <div class="modal-header">
+        <h4 class="modal-title">Zaravin Syrup - Stock Details</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ITEM DETAILS</th>
+                    <th scope="col">QUANTITY</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let stock of stockList">
+                    <td class="item">{{stock.details}}</td>
+                    <td class="quantity">{{stock.quantity}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    </div>
+</div>
+<div *ngIf="showCategoryForm">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{type}} Category</h4>
+    </div>
+    <div class="modal-body">
+        <form class="catForm" [formGroup]="categoryForm">
+            <div class="form-group">
+                <label for="cat-name">CATEGORY NAME<span class="star">*</span></label>
+                <input type="text" class="form-control" id="cat-name" placeholder="" formControlName="categoryname" #name="" required>
+                <span class="error" *ngIf="showerror">{{errMsg}}</span>
+            </div>
+            <div class="form-group">
+                <label for="cat-name">EMPLOYEE DISCOUNT(in %)<span class="star">*</span></label>
+                <input type="number" class="form-control" id="cat-name" placeholder="" [ngClass]="{ 'is-invalid':f.discountPercentage.errors && (f.discountPercentage.touched) }" formControlName="discountPercentage" #name="" required>
+                <span class="error" *ngIf="showerror">{{errMsg}}</span>
+                <div app-errors class="text-danger"  [control]="f.discountPercentage"
+                                        label="Employee Discount"></div>
+            </div>
+            <div class="form-group">
+                <label for="cat-name">LIMIT Per Month<span class="star">*</span></label>
+                <input type="text" class="form-control" id="cat-name" placeholder="" formControlName="maximumLimitPerStaff" #name="" required>
+                <span class="error" *ngIf="showerror">{{errMsg}}</span>
+            </div>
+            <div class="form-group">
+                <label for="desc-textarea">DESCRIPTION</label>
+                <textarea class="form-control" id="desc-textarea" rows="3" formControlName="categorydesc" #name="" required></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-btns">
+            <button type="button" class="btn btn-outline-secondary close-btn" (click)="activeModal.close('Cross click')">Cancel</button>
+            <button type="button" class="btn btn-save" (click)="saveCategory(categoryForm)" [disabled]="!categoryForm.valid"><span>Save
+          Category</span></button>
+        </div>
+    </div>
+</div>
+<div *ngIf="showListConfirmation">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Alert</h4>
+    </div>
+    <div class="modal-content">
+        <h6 class="alert-text modalText">Are you sure you want to exit ?</h6>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-btns">
+            <button type="button" class="btn btn-outline-secondary close-btn" (click)="activeModal.close('Cross click')">Cancel</button>
+            <button type="button" class="btn btn-save" (click)="exit()"><span>{{btnText}}</span></button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="purchaseDeleteConfirmation" class="purchasedelete">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Delete Purchase Order</h4>
+    </div>
+    <div class="modal-content">
+        <h6 class="alert-text modalText">Are you sure you want to delete this purchase order ?</h6>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-btns">
+            <button type="button" class="btn btn-outline-secondary close-btn" (click)="exit()">No, Cancel</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="delete()"><span>Yes, Delete</span></button>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="commonConf" class="purchasedelete">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Are you sure?</h4>
+        <div class="closebtn" (click)="activeModal.close('Close click')">x</div>
+    </div>
+    <div class="modal-content">
+        <h6 class="alert-text modalText">Are you sure you want to exit  the form?</h6>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-btns">
+            <button type="button" class="btn btn-outline-secondary close-btn" (click)="exit()">Exit Form</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="saveDraft()">Yes, Save Draft</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="addNewUom" class="purchasedelete">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add UOM</h4>
+    </div>
+    <div class="modal-body">
+        <form class="catForm" [formGroup]="uomForm">
+            <div class="form-group">
+                <label for="cat-name">UOM NAME<span class="star">*</span></label>
+                <input type="text" class="form-control" id="uom-name" placeholder="" formControlName="uomname" #name="" required>
+                <span class="error" *ngIf="showerror">{{errMsg}}</span>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-btns">
+            <button type="button" class="btn btn-outline-secondary close-btn" (click)="activeModal.close('Cross click')">Cancel</button>
+            <button type="button" class="btn btn-save" (click)="saveUom(uomForm)" [disabled]="!uomForm.valid"><span>Save
+          UOM</span></button>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="confirmCancel" class="purchasedelete">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Cancel Purchase Order</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="vendor">PLEASE SELECT A READON</label>
+            <select class="form-control" id="reason" name="reason" [(ngModel)]="cancelReason.reason">
+              <option disabled>
+                  Select
+              </option>
+              <option value="Duplicate Order">Duplicate Order</option>
+              <option value="Not Required Anymore">Not Required Anymore</option>
+              <option value="Wrong Order">Wrong Order</option>
+              <option value="Others">Others</option>
+          </select>
+        </div>
+        <div class="form-group">
+            <label for="vendor">COMMENTS</label>
+            <textarea class="form-control" id="COMMENTS" rows="3" [(ngModel)]="cancelReason.comments"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-btns">
+            <button type="button" class="btn btn-outline-secondary close-btn" (click)="activeModal.close('Cross click')">Close</button>
+            <button type="button" class="btn btn-save" (click)="cancelPO()"><span>Cancel Purchase Order</span></button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="hsn">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add HSN</h4>
+    </div>
+    <div class="modal-body">
+        <form class="catForm" [formGroup]="hsnForm">
+            <div class="form-group">
+                <label for="cat-name">HSN CODE<span class="star">*</span></label>
+                <input type="text" class="form-control" id="hsn-name" placeholder="" formControlName="hsnCode" #name="" required>
+                <span class="error" *ngIf="showerror">{{errMsg}}</span>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-btns">
+            <button type="button" class="btn btn-outline-secondary close-btn" (click)="activeModal.close('Cross click')">Cancel</button>
+            <button type="button" class="btn btn-save" (click)="saveHsn('hsn')" [disabled]="!this.hsnForm.valid"><span>{{btnText}}</span></button>
+        </div>
+    </div>
+</div>
+<div *ngIf="productStatus">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Product Status</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-6">
+                <h6>Product Name :</h6>
+                <h6>{{productData.itemName}}</h6>
+            </div>
+            <!-- <div class="form-group col-6 flex">
+                <div class="form-check ml-2">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="ACTIVE" [(ngModel)]="productFilter.status" [checked]="productFilter.status=='ACTIVE'">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                Active
+                </label>
+                </div>
+                <div class="form-check ml-2">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" value="INACTIVE" [(ngModel)]="productFilter.status" [checked]="productFilter.status=='INACTIVE'">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                In-Active
+                </label>
+                </div>
+            </div> -->
+            <div class="form-group col-6 hsn-btn">
+                <label class="switch">
+                    <input class="switch-input" type="checkbox"  [checked]="productData.status=='ACTIVE'" (change)="changeStatus(productData.status)" />
+                    <span class="switch-label"  ></span> 
+                    <span class="switch-handle"></span> 
+                </label>
+            </div>
+        </div>
+        <div class="product-status">
+        <table class="table list-table product-modal-table">
+            <thead>
+                <tr>
+                    <th>WareHouse</th>
+                    <th>Status</th>
+                    <th>available Qty</th>
+                </tr>    
+            </thead>
+            <tbody>
+                <tr *ngFor="let col of productData.warehouseActiveFlagList; let i= index">
+                    <td>{{col.wareHouse}}</td>
+                    <td> <label class="switch">
+                        <input class="switch-input" type="checkbox" (change)="changewareHouse(col)"  [checked]="col.active"  />
+                        <span class="switch-label"  ></span> 
+                        <span class="switch-handle"></span> 
+                        </label>
+                    </td>
+                    <td>
+                      <span  class="cursor-pointer" *ngIf="col.availableQuantity || col.availableQuantity=='0'">{{col.availableQuantity}}</span>  
+                      <span class="cursor-pointer click-btn" *ngIf="!col.availableQuantity" (click)="getAvailableQty(col,productData.itemNumber,col.wareHouse)">Click Here</span>
+                    </td>
+                </tr>
+            </tbody>    
+        </table>
+        </div>    
+    </div>
+    <div class="modal-footer">
+        <div class="footer-btns">
+            <button type="button" class="btn btn-outline-secondary close-btn" (click)="activeModal.close('Cross click')">Cancel</button>
+            <button type="button" class="btn btn-save" (click)="saveProduct()"><span>{{btnText}}</span></button>
+        </div>
+    </div>
+</div>

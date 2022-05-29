@@ -1,0 +1,34 @@
+<div class="p-container container-fluid p-0">
+    <div class="header-row">
+        <div class="title">Product Category</div>
+        <div>
+            <button type="button" class="btn btn-prod-pri" (click)="open('New')">
+                <img src="../../assets/add-24px (1).png"> <span>New Category</span>
+            </button>
+        </div>
+        <!-- <div class="filter" (click)="toggleFilter()"><img src="../../assets/filter_alt-24px.png"> Filter</div>
+        <div class="filterMenu" *ngIf="showFilter">
+            <div (click)="getCategories('all')">All Categories</div>
+            <div (click)="getCategories('ACTIVE')">Active</div>
+            <div (click)="getCategories('INACTIVE')">Inactive</div>
+        </div> -->
+    </div>
+    <div class="page-content product-category row flex-gap m-0">
+        <div class="card cursor-pointer" *ngFor="let i= index; let category of categories" [routerLink]="['/list',category.id]">
+            <div class="col-md-12">
+                <div class="btn controls" (click)="showOptions($event,category)">
+                    <img *ngIf="!category.showMenu" src="../../assets/more_vert-24px @2x.png">
+                    <img *ngIf="category.showMenu" src="../../assets/close-24px (2)@2x.png">
+                </div>
+                <div class="categoryMenu" *ngIf="category.showMenu" (click)="$event.stopPropagation()">
+                    <div class="Edit" (click)="editRow($event,category)"><img src="../../assets/Edit.png">Edit</div>
+                    <!-- <div class="Delete"><img src="../../assets/Delete@2x.png">Delete</div> -->
+                    <div class="MarkInactive" (click)="InactiveRow($event,category, i)"><img src="../../assets/library_add_check-24px.png">{{category.statusText}}</div>
+                </div>
+                <div class="cat-name">{{category.categoryName | lowercase }}</div>
+                <div class="prod-count">{{category.numberOfProducts}} Products</div>
+                <div class="cell" [class]="category.activeStatus">{{category.activeStatus}}</div>
+            </div>
+        </div>
+    </div>
+</div>

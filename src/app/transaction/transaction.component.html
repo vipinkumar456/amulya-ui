@@ -1,0 +1,322 @@
+<div class="p-container" #pageTop>
+    <div class="page-content">
+        <div class="showForm">
+            <div class="header-row">
+                <div class="title"><img class="backBtn" [routerLink]="['/miscTransactions']" src="../../assets/keyboard_backspace-24px (1).png" /> {{headerText}}</div>
+            </div>
+
+            <!-- purchase form -->
+            <div class="content" *ngIf="type!='view'">
+                <div class="form">
+                    <form [formGroup]="transactionForm" class="transactionForm">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label for="name list-label">TRANSACTION #<span class="star">*</span></label>
+                                <input type="text" class="form-control" id="name" formControlName="transactionCode">
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="form-group col-12">
+                                <div class="transtype">Select Transaction Type <span class="star">*</span></div>
+                                <div class="row">
+                                    <div class="col-4 radio-grid">
+                                        <input type="radio" class="form-control" id="receipt" value="Receipt" formControlName="transactionType" [ngClass]="{ 'is-invalid': submitted && f.transactionType.errors }" (change)="issueChanged()">
+                                        <div class="text">Receipt (Moving In)</div>
+                                    </div>
+                                    <div class="col-4 radio-grid">
+                                        <input type="radio" class="form-control" id="issue" value="Issue" formControlName="transactionType" [ngClass]="{ 'is-invalid': submitted && f.transactionType.errors }" (change)="issueChanged()">
+                                        <div class="text">Issue (Moving out)</div>
+                                    </div>
+                                </div>
+                                <div *ngIf="f.transactionType.invalid && (f.transactionType.dirty || f.transactionType.touched)" class="customAlert">
+                                    <div *ngIf="f.transactionType.errors.required">
+                                        Transaction Type is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="row" *ngIf="transactionForm.get('transactionType').value">
+                            <div class="form-group col-6">
+                                <label for="location">WAREHOUSE <span class="star">*</span></label>
+                                <select class="form-control" id="location" formControlName="wareHouse" #cityselect [ngClass]="{ 'is-invalid': submitted && f.wareHouse.errors }" (change)="issueChanged()">
+                                <option *ngFor="let warehouse of warehouses; let i = index" [value]="warehouse">
+                                    {{warehouse}}
+                                </option>
+                            </select>
+                                <div *ngIf="f.wareHouse.invalid && (f.wareHouse.dirty || f.wareHouse.touched)" class="customAlert">
+                                    <div *ngIf="f.wareHouse.errors.required">
+                                        Warehouse is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="invoiceNumber list-label">INVOICE NUMBER</label>
+                                <input type="text" class="form-control" id="invoiceNumber" formControlName="invoiceNumber">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-6">
+                                <div>
+                                    <label for="location">TRANSACTION REASONS</label>
+                                    <select class="form-control" id="location" formControlName="transactionReason">
+                                        <option *ngFor="let tt of transType; let i = index" [value]="tt">
+                                            {{tt}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6" *ngIf="transactionForm.value.transactionReason=='Others'">
+                                <label for="location">TRANSACTION COMMENTS</label>
+                                <textarea class="form-control" formControlName="transactionComments"> </textarea>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="transactionForm.get('transactionType').value">
+                            <div class="products">
+                                <div class="itemsContainer">
+                                    <table class="table list-table">
+                                        <thead>
+                                            <tr>
+                                                <th>AMULYA CODE</th>
+                                                <th style="min-width: 250px;">PRODUCT</th>
+                                                <th>BATCH NUMBER</th>
+                                                <th>EXPIRY DATE</th>
+
+                                                <th>SIZE</th>
+                                                <th *ngIf="transactionForm.get('transactionType').value=='Issue'">AVAILABLE QTY</th>
+                                                <th>QTY</th>
+                                                <th>UOM</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container formArrayName="transactionItems" *ngFor="let item of transactionForm.get('transactionItems')['controls']; let i = index;">
+                                                <ng-container [formGroupName]="i">
+                                                    <!-- [ngClass]="{ 'is-invalid': submitted && f.transactionItems['controls'].errors }" -->
+                                                    <tr>
+                                                        <td>
+                                                            <ng-select [items]="productList" required (change)="selectProductNumber($event,item)" formControlName="itemNumber" bindValue="itemNumber" class="browser-default custom-select labelSelect" [virtualScroll]="true" [loading]="loading" bindLabel="itemNumber"
+                                                                (scroll)="onScroll($event)" placeholder="Select Product" appendTo="body" (scrollToEnd)="onScrollToEnd()">
+                                                                <ng-template ng-header-tmp>
+
+                                                                </ng-template>
+                                                                <ng-template ng-option-tmp let-product="item" let-index="index">
+                                                                    <div>{{product.itemNumber}}</div>
+                                                                </ng-template>
+                                                            </ng-select>
+                                                            <div *ngIf="fa['controls'][i].get('itemNumber').invalid && (fa['controls'][i].get('itemNumber').dirty || fa['controls'][i].get('itemNumber').touched)" class="customAlert">
+                                                                <div *ngIf="fa['controls'][i].get('itemNumber').errors.required">
+                                                                    Required.
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <ng-select [items]="productList" required (change)="selectProductName($event,item)" formControlName="itemName" bindValue="itemName" class="browser-default custom-select labelSelect" [virtualScroll]="true" [loading]="loading" bindLabel="itemName" placeholder="Select Product Name"
+                                                                appendTo="body" (scrollToEnd)="onScrollToEnd()">
+                                                                <ng-template ng-header-tmp>
+
+                                                                </ng-template>
+                                                                <ng-template ng-option-tmp let-product="item" let-index="index">
+                                                                    <div>{{product.itemName}} </div>
+                                                                </ng-template>
+                                                            </ng-select>
+                                                            <!-- <div style="display: flex;">
+                                                                <input type="text" formControlName="itemName" class="form-control itemName" (input)="searchItm(item)">
+                                                                <button class="btn itemdpdown p-0" (click)="showProducts($event,item)"><img
+                                                            src="../../assets/arrow_drop_down-24px.png" /></button>
+                                                                <button class="btn search p-0" (click)="getProductByCode(item)"><img
+                                                            src="../../assets/search-24px (2).png"></button>
+                                                                <div class="options" *ngIf="item.controls['showProdList']?.value" infiniteScroll [infiniteScrollDistance]="5" [infiniteScrollThrottle]="50" [scrollWindow]="false" (scrolled)="onScroll()">
+                                                                    <div class="inner-option" *ngFor="let product of  productList; let i = index" (click)="onProductSelection(item, product)" title="{{product.itemName}}">
+                                                                        {{product.itemNumber}} - {{product.itemName}}
+                                                                    </div>
+                                                                    <div class="inner-option" *ngIf="productList.length == 0">
+                                                                        No items found
+                                                                    </div>
+                                                                </div>
+                                                            </div> -->
+                                                            <div *ngIf="fa['controls'][i].get('itemName').invalid && (fa['controls'][i].get('itemName').dirty || fa['controls'][i].get('itemName').touched)" class="customAlert">
+                                                                <div *ngIf="fa['controls'][i].get('itemName').errors.required">
+                                                                    Required.
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <ng-container *ngIf="transactionForm.get('transactionType').value!='Issue'">
+                                                                <input type="text" required class="form-control" id="lotNumber" formControlName="lotNumber" placeholder="">
+
+                                                                <div *ngIf="fa['controls'][i].get('lotNumber').invalid && (fa['controls'][i].get('lotNumber').dirty || fa['controls'][i].get('lotNumber').touched)" class="customAlert">
+                                                                    <div *ngIf="fa['controls'][i].get('lotNumber').errors.required">
+                                                                        Required.
+                                                                    </div>
+                                                                </div>
+                                                            </ng-container>
+                                                            <ng-container *ngIf="transactionForm.get('transactionType').value=='Issue'">
+                                                                <select required class="form-control" style="min-width: 110px;" formControlName="lotNumber" (change)="lotSelected(fa['controls'][i])">
+                                                                    <option *ngFor="let lot of fa['controls'][i].get('lotNumbers').value" [value]="lot.lotNumber">{{lot.lotNumber}}</option>
+                                                                </select>
+                                                                <div *ngIf="fa['controls'][i].get('lotNumber').invalid && (fa['controls'][i].get('lotNumber').dirty || fa['controls'][i].get('lotNumber').touched)" class="customAlert">
+                                                                    <div *ngIf="fa['controls'][i].get('lotNumber').errors.required">
+                                                                        Required.
+                                                                    </div>
+                                                                </div>
+                                                                <label class="text-danger" style="white-space: nowrap;" *ngIf="noStock">No Stock Available</label>
+                                                            </ng-container>
+                                                        </td>
+                                                        <td [title]="fa['controls'][i].get('expiryDate').value">
+                                                            <ng-container *ngIf="transactionForm.get('transactionType').value=='Issue'">
+                                                                <input disabled class="form-control" formControlName="expiryDate" id="expiryDate">
+                                                            </ng-container>
+                                                            <ng-container *ngIf="transactionForm.get('transactionType').value!='Issue'">
+                                                                <input placeholder="Select" required [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control" formControlName="expiryDate" id="expiryDate">
+
+                                                                <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+
+                                                                <div *ngIf="fa['controls'][i].get('expiryDate').invalid && (fa['controls'][i].get('expiryDate').dirty || fa['controls'][i].get('expiryDate').touched)" class="customAlert">
+                                                                    <div *ngIf="fa['controls'][i].get('expiryDate').errors.required">
+                                                                        Required.
+                                                                    </div>
+                                                                </div>
+                                                            </ng-container>
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" required required class="form-control" id="size" readonly formControlName="size">
+                                                            <div *ngIf="fa['controls'][i].get('size').invalid && (fa['controls'][i].get('size').dirty || fa['controls'][i].get('size').touched)" class="customAlert">
+                                                                <div *ngIf="fa['controls'][i].get('size').errors.required">
+                                                                    Required.
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td *ngIf="transactionForm.get('transactionType').value=='Issue'">
+                                                            <input type="number" class="form-control" id="availableQty" formControlName="availableQty" disabled>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" required class="form-control" id="quantity" formControlName="quantity" (change)="qtyChanged(fa['controls'][i])">
+                                                            <div *ngIf="fa['controls'][i].get('quantity').invalid && (fa['controls'][i].get('quantity').dirty || fa['controls'][i].get('quantity').touched)" class="customAlert">
+                                                                <div *ngIf="fa['controls'][i].get('quantity').errors.required">
+                                                                    Required.
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" required class="form-control" id="uom" formControlName="uom" placeholder="" disabled>
+
+                                                        </td>
+                                                        <td>
+
+                                                            <div class="commentContainer">
+                                                                <img (click)="addRemarks($event,fa['controls'][i])" src="../../assets/comment.png" />
+                                                                <img (click)="removeItem(i)" class="item-close" src="../../assets/add-24px (1).png" />
+                                                            </div>
+                                                            <div *ngIf="fa['controls'][i].get('showRemarks').value" class="commentBox">
+                                                                <textarea class="form-control" name="description" formControlName="description" (click)="$event.stopPropagation()"></textarea>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                    <div *ngIf="f.transactionItems['controls'].invalid && (f.transactionItems['controls'].dirty || f.transactionItems['controls'].touched)" class="customAlert">
+                                        <div *ngIf="f.transactionItems['controls'].errors.required">
+                                            Transaction Details are required.
+                                        </div>
+                                    </div>
+
+                                    <div class="addlist" (click)="addItem()">Add Another</div>
+                                </div>
+                            </div>
+                            <!-- new changes for misc. transaction -->
+                        </div>
+                        <div class="row" *ngIf="transactionForm.get('transactionType').value">
+                            <div class="form-group col-6">
+                                <label for="notes">NOTES</label>
+                                <textarea class="form-control" id="notes" rows="3" #name="" formControlName="notes"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="footer-btns" *ngIf="transactionForm.get('transactionType').value">
+                        <div>
+                            <button type="button" class="btn btn-outline-secondary draft-btn" (click)="saveAsDraft()">Save Draft</button>
+                        </div>
+                        <button type="button" class="btn btn-outline-secondary close-btn" [routerLink]="['/miscTransactions']">Cancel</button>
+                        <button type="button" class="btn btn-save" (click)="saveTransaction(transactionForm)"><span>Save
+                        Misc. Transaction</span></button>
+                    </div>
+                </div>
+            </div>
+            <div class="content" *ngIf="type=='view'">
+                <div class="viewDetails">
+                    <div class="row form-group">
+                        <div class="col-6">
+                            <label>DATE</label>
+                            <div class="value">{{selectedTransaction.transactionDate | date:"dd/MM/yyyy"}}</div>
+                        </div>
+                        <div class="col-6">
+                            <label>TRANSACTION #</label>
+                            <div class="value">{{selectedTransaction.transactionCode}}</div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-6">
+                            <label>WAREHOUSE</label>
+                            <div class="value">{{selectedTransaction.wareHouse}}</div>
+                        </div>
+                        <div class="col-6">
+                            <label>CREATED BY</label>
+                            <div class="value">{{selectedTransaction.createdBy}}</div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-6">
+                            <label>TRANSACTION TYPE</label>
+                            <div class="value">{{selectedTransaction.transactionType}}</div>
+                        </div>
+                        <div class="col-6">
+                            <label>INVOICE NUMBER</label>
+                            <div class="value">{{selectedTransaction.invoiceNumber}}</div>
+                        </div>
+                    </div>
+                    <div class="top">
+                        <div class="status-cell">
+                            <div class="status" [class]="selectedTransaction.status">{{selectedTransaction.status}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <table class="miscTable">
+                            <thead>
+                                <th>PRODUCT</th>
+                                <th>BATCH NUMBER</th>
+                                <th>EXPIRY DATE</th>
+                                <th>SIZE</th>
+                                <th>QTY</th>
+                                <th>UOM</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let transaction of selectedTransaction.transactionItems; let i= index">
+                                    <td> {{transaction.itemNumber}} - {{transaction.itemName}}</td>
+                                    <td> {{transaction.lotNumber}}</td>
+                                    <td> {{transaction.expiryDate | date:"dd/MM/yyyy"}}</td>
+                                    <td> {{transaction.size}}</td>
+                                    <td> {{transaction.quantity}}</td>
+                                    <td> {{transaction.uom}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-6">
+                                <label>
+                                    NOTES
+                                </label>
+                                <div class="value terms">
+                                    {{selectedTransaction.notes}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

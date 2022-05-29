@@ -1,0 +1,81 @@
+<div class="p-container">
+    <div class="header-row">
+        <div class="title">Branch Transfer</div>
+        <div>
+            <button type="button" class="btn btn-prod-pri" [routerLink]="['/transfer-order']">
+                <div><img src="../../assets/add-24px (1).png"></div>
+                <div>New Branch Transfer</div>
+            </button>
+        </div>
+        <div class="download"><img src="../../assets/download.png"></div>
+        <div class="filter"><img src="../../assets/filter_alt-24px.png"> Filter</div>
+    </div>
+    <div class="page-content">
+        <div class="showList">
+            <table class="table list-table">
+                <thead>
+                    <tr>
+                        <th scope="col" *ngFor="let head of header; let i = index">
+                            <div *ngIf="head.showSort" class="sort" (click)="sortBy(head.APIname, head)">{{head.name}}<img src="../../assets/arrow_drop_up-24px.png"></div>
+                            <div *ngIf="!head.showSort">{{head.name}}</div>
+                        </th>
+                        <!-- <th scope="col">DATE <img src="../../assets/arrow_drop_up-24px.png"></th>
+                        <th  scope="col">TRANSFER ORDER#<img src="../../assets/arrow_drop_up-24px.png" ></th>
+                        <th scope="col">CREATED BY<img src="../../assets/arrow_drop_up-24px.png"></th>
+                        <th scope="col">DUE DATE</th>
+                        <th scope="col">STATUS<img src="../../assets/arrow_drop_up-24px.png"></th> -->
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let transfer of transfers; let i= index">
+                        <td>{{transfer.createdDate | date:"dd/MM/yyyy"}}</td>
+                        <td class="venEdit">
+                            <div [routerLink]="['/transfer-order','view',transfer.id]">{{transfer.transferOrderCode}}</div>
+                        </td>
+                        
+                        <td>{{transfer.createdBy}}</td>
+                         <td>{{transfer.dueDate | date:"dd/MM/yyyy"}}</td>
+                        
+                        <td>
+                            <div class="cell" [class]="transfer.transferOrderStatus">{{transfer.transferOrderStatus}}</div>
+                        </td>
+                        <td>
+                            <div class="controls">
+                                <img class="more-btn" [ngClass]="transfer.transferOrderStatus=='CLOSED'||transfer.transferOrderStatus=='CANCELLED'?'routeInactive':''" (click)="showOptions($event,transfer)" *ngIf="!transfer.showMenu" src="../../assets/more_vert-24px @2x.png">
+                                <img class="more-btn" *ngIf="transfer.showMenu" (click)="transfer.showMenu=false" src="../../assets/close-24px (2)@2x.png">
+                            </div>
+                            <div class="purchaseMenu" *ngIf="transfer.showMenu">
+                                <div class="Edit elmnt" [routerLink]="['/transfer-order','edit',transfer.id]"><img src="../../assets/Edit.png">Edit
+                                </div>
+                                <div class="Edit elmnt" (click)="deletetransfer(transfer)"><img
+                                        src="../../assets/Delete.png">Delete
+                                </div> 
+                                <div class="Edit elmnt" [routerLink]="['/transfer-order','clone',transfer.id]"><img src="../../assets/manage.png">Clone
+                                </div>
+                                <div class="Edit elmnt" (click)="canceltransfer(transfer)"><img src="../../assets/close-24px (2).png">Cancel Branch Transfer
+                                </div>
+                                <div class="Edit elmnt" [routerLink]="['/receive-transfer-order','receive',transfer.id]"><img src="../../assets/recieve.png">Recieve transfer Order
+                                </div> 
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between p-2 prodList-pagination" *ngIf="transfers?.length > 0">
+                <!-- <div class="backToTop" (click)="scrollToTop(pageTop)">Back to Top</div> -->
+                <div class="pagi">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [maxSize]="4" [pageSize]="pageSize" (pageChange)="refreshPages()"> </ngb-pagination>
+                </div>
+                <div class="pagesize">
+                    <div for="pagesize list-label">Items per page</div>
+                    <select class="form-control" id="pagesize" [(ngModel)]="pageSize" (change)="updatePageSize()" #pageSelect>
+                        <option [value]="10">10</option>
+                        <option [value]="25">25</option>
+                        <option [value]="50">50</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

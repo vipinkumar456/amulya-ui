@@ -1,0 +1,204 @@
+
+<!-- <span class="cart-notification">
+            <span class="notification-text">{{cartProductLength}}</span>
+            </span> -->
+
+<div class="main-row">
+    <div class="col-left" style="position: sticky;">
+        <app-ecom-sidenav></app-ecom-sidenav>
+    </div>
+    <div class="col-right">
+        <main>
+            <div class="header-row">
+                <div class="col-8 left-header ">
+            
+                    <img src="../../assets/search.png">
+                    <input type="text" class="form-control searchBar ml-3" placeholder="Search">
+                </div>
+                <div class="col-4 right-header mt-1">
+                    <select class="form-style form-control" aria-label="Default select example">
+                        <option selected>POPULARITY</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+            <div class="topContainer">
+                <!-- <div class="row">
+                    <div class="col"><img src="../../assets/add-to-cart.png" (click)="getCart()" style="width:4%;float:right;cursor: pointer;">
+                    <span class="cart-notification">
+                    <span class="notification-text">{{cartProductLength}}</span></span></div>
+                </div>  -->
+            </div>
+            <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row Product-row">
+                            <div class="col-7">
+                                <h5 style="font-weight: bolder;">{{categoryName}}</h5>
+                            </div>
+                            <div class="col" style="text-align: right;">
+                                <h6 class="showingRecords mt-2 ml-5" style="margin-right:-55px;">Showing
+                                    {{noOfElements}} of {{totalElements | json}}</h6>
+                            </div>
+                            <div class="col-2 mt-2">
+                                <div style="text-align: right;">
+                                    <span class="left-right-arrow" id="arrowCount" (click)="arrowClick('left')">
+                                        <img src="../../assets/left-arrow.png" class="cartImg" alt="...">
+                                    </span>
+                                    <span class="left-right-arrow ml-3" id="arrowCount" (click)="arrowClick('right')">
+                                        <img src="../../assets/right-arrow.png" class="cartImg" alt="..."></span>
+                                </div>
+                                <!-- <ngb-pagination [collectionSize]="collectionSize" [(page)]="currentPage" [maxSize]="4" [pageSize]="itemsPerPage" (pageChange)="refreshPages()"> </ngb-pagination>  -->
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3 ">
+                            <ng-container *ngFor="let col of productlist | slice: pageSize | slice: 0:itemsPerPage ">
+                                <div class="col" style="margin-top:40px">
+                                    <div class="card">
+                                        <div class="shopimg">
+
+                                            <img src="{{col.Image}}" class="card-img" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title card-title-name">{{col.itemName}}</h5>
+                                            <h5 class="card-title font-weight-bold">&#x20b9; {{col.mrp}}</h5>
+                                            <div class="text-center cart my-4" (click)="addToCart(col)"
+                                                style="cursor: pointer; ">
+                                                <img src="{{col.cartImg}}" class="cartImg" alt="...">
+                                                <span style="font-size: 15px;">{{col.cartStatus}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="d-flex justify-content-between p-2 prodList-pagination" *ngIf="productlist?.length > 0"
+                style="margin-bottom: 10px;">
+                <!-- <div class="backToTop" (click)="scrollToTop(pageTop)">Back to Top</div> -->
+                <div class="pagi">
+                    <ngb-pagination [collectionSize]="collectionSize" [(page)]="currentPage" [maxSize]="4"
+                        [pageSize]="itemsPerPage" (pageChange)="refreshPages()"> </ngb-pagination>
+                </div>
+                <div class="pagesize">
+                    <div for="pagesize list-label">Items per page</div>
+                    <select class="form-control" id="pagesize" [(ngModel)]="itemsPerPage" (change)="updatePageSize()"
+                        #pageSelect>
+                        <option [value]="10">10</option>
+                        <option [value]="12">12</option>
+                        <option [value]="25">25</option>
+                        <option [value]="50">50</option>
+                    </select>
+                </div>
+            </div>
+            <!-- <button type="button"  style="float:right" class="btn btn-primary my-3" routerLink="/payentmethod">Payment</button> -->
+        </main>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="locModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cartModalLabel">Cart</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style=" font-size: 45px;color:white;margin-top:-26px" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <ng-container *ngFor="let col of cartProduct">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-3">
+                                    <img src="{{col.Image}}" style="width:100%">
+                                </div>
+                                <div class="col-9">
+                                    {{col.productName}}
+                                    <div class="row">
+                                        <div class="col-4">
+                                            &#x20b9; {{col.mrp}}
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="container text-center" style="border: 1px solid green;">
+                                                <button type="button" class="qtybtn" (click)="minus(col)"><i
+                                                        class="fa fa-minus"></i>-</button>
+                                                <input type="text" class="qtybtn" value="{{col.quantity}}"
+                                                    style="max-width: 22px;">
+                                                <button type="button" class="qtybtn" (click)="plus(col)"><i
+                                                        class="fa fa-plus"></i>+</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <button type="button" style="margin-top: -5px;" class="qtybtn"
+                                                (click)="removefromCart(col)"><img
+                                                    src="../../assets/Delete@2x.png"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </ng-container>
+                    <div class="container" *ngIf="cartProduct?.length>0">
+                        <div class="cartInvoice">
+                            <p class="cartHeading ">sub Total :</p>
+                            <p class="cartPrice">&#x20b9; {{cartTotalPrice}}</p>
+                        </div>   
+                        <div class="cartInvoice">
+                            <p class="cartHeading ">Discount :</p>
+                            <p class="cartPrice">&#x20b9; 0</p>
+                        </div>  
+                        <div class="cartInvoice">
+                            <p class="cartHeading ">Round Off :</p>
+                            <p class="cartPrice">&#x20b9; 0</p>
+                        </div>  
+                        <div class="cartInvoice">
+                            <p class="cartHeading ">GST :</p>
+                            <p class="cartPrice">&#x20b9; 0</p>
+                        </div>  
+                        <div class="cartInvoice">
+                            <p class="cartHeading ">sub Total :</p>
+                            <p class="cartPrice">&#x20b9; {{cartTotalPrice}}</p>
+                        </div>   
+                        
+                        <!-- <div class="row">
+                            <div class="col-3"></div>
+                            <div class="col-6">
+                                <p class="cartHeading ">sub Total</p>
+                                <p class="cartHeading ">Discount</p>
+                                <p class="cartHeading ">Round Off</p>
+                                <p class="cartHeading ">GST</p>
+                                <h5 class="mt-1" style="font-weight: bold;">Total Amount</h5>
+                            </div>
+                            <div class="col-3">
+                                <p class="cartPrice">&#x20b9; {{cartTotalPrice}}</p>
+                                <p class="cartPrice">&#x20b9; 0</p>
+                                <p class="cartPrice">&#x20b9; 0</p>
+                                <p class="cartPrice">&#x20b9; 0</p>
+                                <p style="font-weight: bold;">&#x20b9; {{cartTotalPrice}}</p>
+                            </div>
+
+                        </div> -->
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer p-3">
+                <button type="button" class="form-control continueshop" (click)="closeModal()">Continue
+                    Shopping</button>
+                <button type="button" class="btn btn-outline-dark checkout"
+                    [routerLink]="['/continue-shopping','shopping']">Checkout</button>
+            </div>
+        </div>
+    </div>
+</div>

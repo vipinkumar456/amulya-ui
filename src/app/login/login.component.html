@@ -1,37 +1,32 @@
-<div class="p-grid loginContainer">
-    <div class="p-col-4"></div>
-    <div class="p-col-4 loginBlock">
-        <div class="p-fluid loginBox">
-            <h4 class="text-center">Gap Screens</h4>
-            <h2 class="text-center">Login</h2>
-            <br><br>
-            <div class="p-field">
-                <span class="p-float-label">
-                <input id="username" type="text" pInputText>
-                <label for="username">Username</label>
-                </span>
-            </div>
-            <div class="p-field">
-                <span class="p-float-label">
-                    <input id="password" type="password" pInputText>
-                    <label for="password">Password</label>
-
-                </span>
-
-            </div>
-            <div class="p-fluid p-formgrid p-grid">
-                <div class="p-field-checkbox p-col">
-                    <p-checkbox name="remember" value="remember" inputId="remember"></p-checkbox>
-                    <label for="remember"> Remember Me</label>
-                </div>
-                <div class="p-field p-col text-right">
-                    <a href="">Forgot Password?</a>
-                </div>
-            </div>
-            <div class="p-field-checkbox">
-                <p-button label="Login" [routerLink]="['/home']" styleClass="p-button p-button-pnb btn-block"></p-button>
-            </div>
+<div class="containerFull loginBg">
+    <section class="loginContainer">
+        <div class="row text-center">
+            <img src="../../assets/logo (1)@2x.png">
         </div>
-    </div>
-    <div class="p-col-4"></div>
+        <p class="loginHeader mt-5">Login To Amulya Herbs</p>
+
+        <form #f="ngForm" (ngSubmit)="f.form.valid && signIn()">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <img src="../../assets/icon-email.png" class="inputIconLeft">
+                    <input type="text" class="form-control" name="username" placeholder="Username" required [(ngModel)]="user.username" [ngClass]="{ 'is-invalid': hasError }">
+                </div>
+                <div class="form-group col-md-12">
+                    <img src="../../assets/icon-password-lock.png" class="inputIconLeft">
+                    <input [type]="passwordType" class="form-control" name="password" required placeholder="Password" [(ngModel)]="user.password" [ngClass]="{ 'is-invalid': hasError }">
+                    <img src="../../assets/icon-password-eye-show.png" class="inputIconright" (click)="(passwordType=='password')?(passwordType='text'):(passwordType='password')">
+                </div>
+                <div class="customError" *ngIf="hasError">Incorrect Username or Password</div>
+                <div class="form-group col-md-12">
+                    <button class="btn btn-block btn-amulya " [disabled]="!f.form.valid" type="submit">SignIn</button>
+                    <p class="text-danger mt-2" *ngIf="errorMessage"> {{errorMessage}}</p>
+                </div>
+                <div class="form-group col-md-12">
+                    <a class="mt-2">Forgot Password?</a>
+                </div>
+
+
+            </div>
+        </form>
+    </section>
 </div>

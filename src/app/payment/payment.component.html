@@ -1,0 +1,73 @@
+<div class="p-container">
+    <div class="showForm">
+
+        <div class="header-row" style="display: flex;">
+            <div class="title"><img class="backBtn" [routerLink]="['/vendor']" src="../../assets/keyboard_backspace-24px (1).png" />Payment</div>
+        </div>
+        <div class="page-content">
+            <div class="content">
+                <div class="showPayment">
+                    
+                        <form [formGroup]="paymentAddForm">
+                            <table class="table list-table">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 200px;">Date</th>
+                                        <th>VENDOR CODE.</th>
+                                        <th>VENDOR NAME</th>
+                                        <th>PURCHASE ORDER</th>
+                                        <th>AMOUNT</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container formArrayName="paymentItems" *ngFor="let item of paymentAddForm.get('paymentItems')['controls']; let i = index; last as isLast; first as isFirst;">
+                                        <ng-container [formGroupName]="i">
+                                            <!-- [ngClass]="{ 'is-invalid': submitted && f.transactionItems['controls'].errors }" -->
+                                            <tr>
+                                                
+                                                <td>
+                                                   
+                                                    <div class="input-group">
+                                                        <input placeholder="Select" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control"  formControlName="transactionDate" [(ngModel)]="paymentData.transactionDate" [max]="date" >
+                                                        <div class="input-group-append" [owlDateTimeTrigger]="dt1" >
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <img src="./assets/date_range-24px (1).png">
+                                                            </span>
+                                    
+                                                        </div>
+                                                    </div>
+                                                    <owl-date-time #dt1 [pickerType]="'calendar'" ></owl-date-time>
+                                                    <!-- <input type="Date" class="form-control" id="uom" formControlName="transactionDate" [(ngModel)]="paymentData.transactionDate" [max]="date" placeholder=""  [max]="getToday()"> -->
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" id="vendorCode" formControlName="vendorCode" [(ngModel)]="paymentData.vendorCode" (change)="onVendorSelection($event.target.value)" placeholder=""  >
+            
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" style="min-width: 200px;" id="vendor" placeholder="" formControlName="vendor" disabled [(ngModel)]="paymentData.vendor" >
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" id="voucherNumber" formControlName="voucherNumber" [(ngModel)]="paymentData.voucherNumber" placeholder="" >
+            
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" id="amount" formControlName="amount" [(ngModel)]="paymentData.amount" placeholder="" >
+            
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                            </form>
+                         
+                      </div>
+                      <div class="footer-btns mt-2 foot-flex">
+                        <button type="button" class="btn btn-outline-secondary close-btn" [routerLink]="['/vendor']">Cancel</button>
+                        <button type="button" class="btn btn-save" (click)='makePayment()' [disabled]="!paymentData.vendor"><span>Submit</span></button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+

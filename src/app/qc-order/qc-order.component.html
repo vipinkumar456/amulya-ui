@@ -1,0 +1,193 @@
+<div class="p-container" *ngIf="!qcparamFlag">
+    <div class="showForm">
+
+        <div class="header-row" style="display: flex;">
+            <div class="title"><img class="backBtn" [routerLink]="['/purchases']" src="../../assets/keyboard_backspace-24px (1).png" /> {{headerText}}</div>
+        </div>
+        <div class="page-content">
+            <div class="content">
+                <div class="form">
+                    <form [formGroup]="purchaseForm">
+                        <div class="purchaseForm">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="name list-label">PURCHASE ORDER #<span class="star">*</span></label>
+                                    <input type="text" class="form-control" style="font-weight: 700;" id="name" formControlName="purchaseOrderCode" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="vendor">SELECT VENDOR<span class="star">*</span></label>
+                                    <select class="form-control" id="vendor" formControlName="vendorName" #vendorselect disabled>
+                                        <option *ngFor="let vendor of vendors; let i = index" [value]="vendor.vendorName">
+                                            {{vendor.vendorName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="purchaseForm.get('vendorName').invalid && (purchaseForm.get('vendorName').dirty || purchaseForm.get('vendorName').touched)" class="text-danger">
+                                        <div *ngIf="purchaseForm.get('vendorName').errors.required">
+                                            Required.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-6" *ngIf="type!='receive'">
+                                    <label for="city">ORDER TO WAREHOUSE <span class="star">*</span></label>
+                                    <select class="form-control" id="location" required formControlName="wareHouse" #cityselect disabled>
+                                        <option *ngFor="let warehouse of warehouses; let i = index" [value]="warehouse">
+                                            {{warehouse}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="purchaseForm.get('wareHouse').invalid && (purchaseForm.get('wareHouse').dirty || purchaseForm.get('wareHouse').touched)" class="text-danger">
+                                        <div *ngIf="purchaseForm.get('wareHouse').errors.required">
+                                            Required.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-6">
+                                    <label for="createdBy" style="color: #999999;">CREATED BY<span class="star">*</span></label>
+                                    <input type="text" class="form-control" id="createdBy" formControlName="createdBy" disabled>
+                                </div>
+                                <div class="form-group  col-6">
+                                    <label for="dueDate">DUE DATE<span class="star">*</span></label>
+                                    <div class="input-group">
+                                        <input placeholder="Select" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" class="form-control" formControlName="dueDate" id="dueDate" [disabled]="isQCApproved">
+                                        <div class="input-group-append" [owlDateTimeTrigger]="dt1">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <img src="./assets/date_range-24px (1).png">
+                                            </span>
+                                         </div>
+                                    </div>
+                                    <div *ngIf="purchaseForm.get('dueDate').invalid && (purchaseForm.get('dueDate').dirty || purchaseForm.get('dueDate').touched)" class="text-danger">
+                                        <div *ngIf="purchaseForm.get('dueDate').errors.required">
+                                            Required.
+                                        </div>
+                                    </div>
+                                    <owl-date-time #dt1 [pickerType]="'calendar'" [disabled]="isQCApproved"></owl-date-time>
+                                </div>
+                                <div class="form-group  col-6" *ngIf="type=='receive'">
+                                    <label for="dueDate">ORDER DATE</label>
+                                    <div class="input-group">
+                                        <input placeholder="Order Date" [owlDateTime]="dt5" [owlDateTimeTrigger]="dt5" class="form-control" formControlName="orderDate" id="orderDate">
+                                        <div class="input-group-append" disabled>
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <img src="./assets/date_range-24px (1).png">
+                                            </span>
+
+                                        </div>
+                                        <owl-date-time #dt5 [pickerType]="'calendar'"></owl-date-time>
+                                    </div>
+                                </div>
+                                <div class="form-group col-6" *ngIf="type=='receive'">
+                                    <label for="dueDate">RECEIVED DATE<span class="star">*</span></label>
+                                    <div class="input-group">
+                                        <input placeholder="Select" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" class="form-control" formControlName="receivedDate" id="receivedDate" required>
+                                        <div class="input-group-append" [owlDateTimeTrigger]="dt2">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <img src="./assets/date_range-24px (1).png">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="purchaseForm.get('receivedDate').invalid && (purchaseForm.get('receivedDate').dirty || purchaseForm.get('receivedDate').touched)" class="text-danger">
+                                        <div *ngIf="purchaseForm.get('receivedDate').errors.required">
+                                            Required.
+                                        </div>
+                                    </div>
+                                    <owl-date-time #dt2 [pickerType]="'calendar'"></owl-date-time>
+                                    <!-- <input type="date" class="form-control" id="dueDate" formControlName="receivedDate" value="{{purchaseForm.controls['receivedDate'].value | date:'yyyy-MM-dd'}}"> -->
+                                </div>
+                                <div class="form-group col-6" *ngIf="type=='receive'">
+                                    <label for="invoiceNumber list-label">INVOICE NUMBER<span class="star">*</span></label>
+                                    <input type="text" class="form-control" id="invoiceNumber" required formControlName="invoiceNumber">
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="type!='receive'">
+                                <div class="form-group col-6">
+                                    <label for="notes">NOTES</label>
+                                    <textarea class="form-control" [readonly]="type=='view'" id="notes" rows="3" #name="" formControlName="notes"></textarea>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="paymentTerms">PAYMENT TERMS</label>
+                                    <textarea class="form-control" id="paymentTerms"  *ngIf="!isQCApproved" rows="3" #name="" formControlName="paymentTerms" ></textarea>
+                                    <textarea class="form-control" *ngIf="isQCApproved" id="paymentTerms"  rows="3" #name="" formControlName="paymentTerms" disabled ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="products">
+                            <div class="itemsContainer">
+                                <table  class="table list-table">
+                                    <thead>
+                                        <tr>
+                                            <th>PRODUCT NAME</th>
+                                            <th>AMULYA CODE</th>
+                                            <th>BRANCH NUMBER</th>
+                                            <th>QTY ORDERED</th>
+                                            <th>INVOICE QTY</th>
+                                            <th>QTY RECEIVED</th>
+                                            <th>QTY REJECTED</th>
+                                            <th>QC STATUS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container class="rows" formArrayName="purchaseOrderItems" *ngFor="let item of purchaseForm.get('purchaseOrderItems')['controls']; let i = index;">
+                                            <ng-container [formGroupName]="i">
+                                                <tr>
+                                                    <td>
+                                                        {{item.get('itemName').value}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.get('itemNumber').value}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.get('lotNumber').value}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.get('quantity').value}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.get('invoiceQuantity').value}}
+                                                    </td>
+                                                    <td>
+                                                        {{item.get('receivedQuantity').value}}
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control " id="price" placeholder="" formControlName="rejectedQuantity">
+                                                    </td>
+                                                    <td>
+                                                        <div *ngIf="item.get('qualityCheckStatus').value=='QC Pending'" class="cell QC_PENDING"  (click)="qcParam(item)"  ngbTooltip="Click here for QC">{{item.get('qualityCheckStatus').value}}</div>
+                                                        <div *ngIf="item.get('qualityCheckStatus').value!='QC Pending'" class="cell" [ngClass]="item.get('qualityCheckStatus').value=='QC Approved'?'ACTIVE':'INACTIVE'">{{item.get('qualityCheckStatus').value}}</div>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                                <table class="table list-table qcparam" *ngIf="isParamTable">
+                                    <thead>
+                                        <tr>
+                                            <th>PARAMETERS</th>
+                                            <th>Quality Check</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody >
+                                        <tr *ngFor="let arr of qcparamFormArray">
+                                            <td>{{arr.parameterName}}</td>
+                                            <td>{{arr.qualityCheckPassed}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="footer-btns mt-2 foot-flex">
+                        <button type="button" class="btn btn-outline-secondary close-btn" [routerLink]="['/purchases']">Cancel</button>
+                        <button *ngIf="!isQCApproved && isParamTable"  type="button" class="btn btn-save" (click)="saveOrderQc()"><span>Save Order QC</span></button>
+                        <button *ngIf="!isQCApproved && !isParamTable"  type="button" class="btn btn-save" (click)="saveOrderQc()" disabled><span>Save Order QC</span></button>
+                    </div>
+                    <!-- [disabled]="purchases.status!='QC_PENDING'" -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-qc-parameters [item]="rowData" (resItemEvent)="updateResponse($event)" *ngIf="qcparamFlag"></app-qc-parameters>

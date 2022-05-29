@@ -1,32 +1,64 @@
-<div class="pnbHeader text-center" role="banner">
-    <img src="./assets/icons/pnb.png" class="headerImg">
-    <!-- <img width="40" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
-    />
-    <span>Welcome</span>
-    <div class="spacer"></div>
-    <a aria-label="Angular on twitter" target="_blank" rel="noopener" href="https://twitter.com/angular" title="Twitter">
-        <svg id="twitter-logo" height="24" data-name="Logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
-          <rect width="400" height="400" fill="none"/>
-          <path d="M153.62,301.59c94.34,0,145.94-78.16,145.94-145.94,0-2.22,0-4.43-.15-6.63A104.36,104.36,0,0,0,325,122.47a102.38,102.38,0,0,1-29.46,8.07,51.47,51.47,0,0,0,22.55-28.37,102.79,102.79,0,0,1-32.57,12.45,51.34,51.34,0,0,0-87.41,46.78A145.62,145.62,0,0,1,92.4,107.81a51.33,51.33,0,0,0,15.88,68.47A50.91,50.91,0,0,1,85,169.86c0,.21,0,.43,0,.65a51.31,51.31,0,0,0,41.15,50.28,51.21,51.21,0,0,1-23.16.88,51.35,51.35,0,0,0,47.92,35.62,102.92,102.92,0,0,1-63.7,22A104.41,104.41,0,0,1,75,278.55a145.21,145.21,0,0,0,78.62,23" fill="#fff"/>
-        </svg>
-    </a> -->
-    <div class="userDrop">
-        <a [routerLink]="['/home']" class="mr-2 text-white"> <i class="pi pi-home mr-2"></i>Home</a>
-        <!-- <a class="mr-2 text-white"> <i class="pi pi-user mr-2"></i>{{username}}</a> -->
-
-        <p-splitButton [label]="username" icon="pi pi-user" class="ml-2" [model]="items"></p-splitButton>
-    </div>
-    <!-- <div ngbDropdownMenu aria-labelledby="dropdownForm1"  class="mr-2 text-white" class="pi pi-arrow-left">
-        <div ngbDropdownItem (click)="logout()">Logout</div>
-    </div> -->
-
-
-</div>
-<div class="pnbSubHeader">
-    <b>{{title}}</b>
-</div>
-<div class="layout-content">
-
-    <router-outlet></router-outlet>
-
+<div class="header">
+  <nav class="navbar navbar-expand-lg">
+      <!-- <form [formGroup]="searchForm" class="form-inline searchForm">
+          <div class="form-group" style="position: relative;" *ngIf="!hideSearch">
+              <label for="exampleInputEmail1"></label>
+              <img src="../../assets/search-24px (2).png" style="position: absolute;left: 8px;height: 20px;width: 20px;">
+              <input type="email" class="form-control search-input" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="searchTerm" placeholder="Search">
+          </div>
+      </form> -->
+      <!-- <img src="../../assets/add-to-cart.png" style="width:3%;"> -->
+      <div class="nav-details" id="navbarTogglerDemo03">
+        <ul class="navbar-nav">
+              <li class="nav-item" style="line-height: 3.5"> 
+                <a class="nav-link" href="#"><svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-bell"
+                  fill="#768198" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2z" />
+                  <path fill-rule="evenodd"
+                      d="M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z" />
+              </svg><span class="sr-only">(current)</span></a>
+      </li>
+              <!-- <li class="nav-item" style="line-height: 3.5" *ngIf="!shoppingHead">
+                <a class="nav-link" href="#"><svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-bell"
+                        fill="#768198" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2z" />
+                        <path fill-rule="evenodd"
+                            d="M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z" />
+                    </svg><span class="sr-only">(current)</span></a>
+             </li> -->
+              <!-- <li class="userdetails" *ngIf="shoppingHead" [routerLink]="['/shopping','Cart','OpenCart']" ><img src="../../assets/add-to-cart.png" style="max-width: 5%;float: right;margin-top:3%;margin-right: 3%;"></li> -->
+              <li class="userdetails">{{userName}}</li>
+              <li class="nav-item">
+                  <div ngbDropdown class="d-inline-block drpdwn">
+                      <div id="dropdownForm1" ngbDropdownToggle>
+                          <img src="../../assets/Customer-Inactive@2x.png" style="height: 40px; width: 40px; border-radius: 50%;margin-right: 8px;"></div>
+                      <div ngbDropdownMenu aria-labelledby="dropdownForm1" class="dropdown-menu dropdown-menu-right">
+                          <div ngbDropdownItem (click)="logout()">Log out</div>
+                      </div>
+                  </div>
+              </li>
+          </ul>
+      </div>
+  </nav>
+ <!-- <nav class="navbar navbar-expand-lg navbar-light" *ngIf="shoppingHead" style="height:80px">
+      <a class="navbar-brand">
+        <img src="../../assets/logo (1)@2x.png" style="width:68%">
+      </a>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link"> <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"></a>
+          </li>
+        </ul>
+       <span class="navbar-text">
+          <img src="../../assets/add-to-cart.png" style="width:4%;float:right">
+        </span>
+      </div>
+    </nav>  -->
 </div>

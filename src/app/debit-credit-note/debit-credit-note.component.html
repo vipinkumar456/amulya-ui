@@ -1,0 +1,230 @@
+<div class="header-row" style="display: flex;">
+  <div class="title"><img class="backBtn" [routerLink]="['/purchases']" src="../../assets/keyboard_backspace-24px (1).png" /> {{heading}}</div>
+</div>
+<div class="container Invoice" id="htmltable" #htmltable>
+  
+    <div class="row" style="border-bottom: 1px solid;">
+        <div class="col">
+            <a class="navbar-brand"><img src="../../assets/logo (1)@2x.png" style="width:68%"></a>
+        </div>
+        <div class="col" style="border-right:1px solid">
+            <h3>Amulya Billing Hub</h3>
+            <p>Address:</p>
+            <p style="height:0px">GST:</p>
+        </div>
+        <div class="col">
+            <p>original for Receipt</p>
+            <p>Duplicate for Transfer</p>
+            <p>Triplicate for Supplier</p>
+
+        </div>
+    </div>
+    <div >
+        <h6 style="text-align: center;height:10px">Debit Note</h6>
+    </div>
+    <div class="row" style="border-top: 1px solid;border-bottom: 1px solid;">
+        <div class="col-6 invoiceTable" style="border-right: 1px solid;">
+            <table>
+                 <tr>
+                  <td>#Ref No</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Debit Note No</td>
+                  <td>{{invoiceData.debitNoteNumber}}</td>
+                </tr>
+                <tr>
+                  <td>Debit Note Date</td>
+                  <td>{{invoiceData.debitNoteDate}}</td>
+                </tr>
+                <tr>
+                  <td>Reverse Charge</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>State</td>
+                  <td>{{invoiceData.state}}</td>
+                  <td>{{invoiceData.code}}</td>
+                  <td>{{invoiceData.hr}}</td>
+                </tr>
+              </table>
+            </div>
+        <div class="col-6">
+            <p>Againt Invoice: {{invoiceData.invoiceNumber}}</p>
+            <p>Date of  Invoice: {{invoiceData.invoiceDate}}</p>
+            <p>Eway Bill No:  </p>    
+        </div>
+    </div>
+    <!-- <div class="row" style="min-height: 15px;border: 1px solid;">
+    </div> -->
+    <div class="row" style="border-bottom: 1px solid;">
+        <div class="col-6 invoiceTable" style="border-right: 1px solid;">
+            <p style="text-align: center;height:0px">BILL TO PARTY</p>
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td>Amulya Herbs Pvt Ltd(HRCD004)</td>
+                  </tr>
+                  <tr>
+                    <td>Address</td>
+                    <td>Plotno 211,HSIIDC,INDUSTRIAL ESTAE ALIPUR</td>
+                  </tr>
+                  <tr>
+                    <td>GSTIN</td>
+                    <td>06AAMCA5969R1ZN</td>
+                  </tr>
+                  <tr>
+                    <td>State</td>
+                    <td>HARYANA</td>
+                    <td>Code</td>
+                    <td>HR</td>
+                  </tr>
+                  
+              </table>
+            </div>
+        <div class="col-6 invoiceTable">
+            <p style="text-align: center;height:0px">SHIP TO PARTY</p>
+            <table>
+                 <tr>
+                  <td>Name</td>
+                  <td>Plotno 211,HSIIDC,INDUSTRIALESTAEALIPUR</td>
+                </tr>
+                <tr>
+                  <td>GSTIN</td>
+                  <td>06AAMCA5969R1ZN</td>
+                </tr>
+                <tr>
+                  <td>State</td>
+                  <td>HARYANA</td>
+                  <td>Code</td>
+                  <td>HR</td>
+                </tr>
+                
+              </table>
+        </div>
+    </div>
+    <!-- <div class="row" style="min-height: 15px;border: 1px solid;">
+    </div> -->
+    <div class="row invoiceTable">
+        <table>
+            <tr>
+              <th>Product Description</th>
+              <th>HSN Code</th>
+              <th>Qty</th>
+              <th>Batch No.</th>
+              <th>Rate</th>
+              <th>Amount</th>
+              <th>Discount</th>
+              <th>Taxable</th>
+              <th>CGST</th>
+              <th>SGST</th>
+              <th>IGST</th>
+              <th>TOTAL</th>
+            </tr>
+            <tr *ngFor="let item of items; let i= index">
+              <td>{{item.productDescription}}</td>
+              <td>{{item.hsnCode}}</td>
+              <td style="text-align: right;">{{item.quantity}}</td>
+              <td>{{item.batchNumber}}</td>
+              <td style="text-align: right;">{{item.rate}}</td>
+              <td style="text-align: right;">{{item.amount}}</td>
+              <td></td>
+              <td style="text-align: right;">{{item.taxableValue}}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              
+          </tr>
+
+              <tr>
+                <th></th>
+                <th>Taxable Value</th>
+                <th>CGST%</th>
+                <th>Amount</th>
+                <th>SGST%</th>
+                <th>Amount</th>
+                <th>IGST%</th>
+                <th>Amount</th>
+                <th colspan="2">TOTAL TAX AMONT</th>
+                <th colspan="2">TOTAL AMOUNT</th>
+                
+              </tr>
+              <tr>
+                <td></td>
+                <td style="text-align: right;">0</td>
+                <td style="text-align: right;">0</td>
+                <td style="text-align: right;">0</td>
+                <td style="text-align: right;">0</td>
+                <td style="text-align: right;">0</td>
+                <td style="text-align: right;">0</td>
+                <td style="text-align: right;">0</td>
+                <td colspan="2" style="text-align: right;">0</td>
+                <td colspan="2" style="text-align: right;">0</td>
+                
+              </tr>
+          </table>
+          
+    </div>
+    <!-- <div >
+        <p style="float:right;font-weight: bold;">Self Pickup Discount: 0</p>
+        
+    </div> -->
+    <!-- <div class="row">
+        <div class="col-12">
+            <p>sd</p>
+        </div>
+    </div> -->
+    <div class="row" style="border-top: 1px solid;">
+        <div class="col-12" style="text-align: center;">Details of Advance amount Received</div> 
+    </div>
+    <div class="row" style="border-top:1px solid;border-bottom: 1px solid;">
+        <div class="col-8" style="border-right: 1px solid;">
+            <div >
+            <p style="height:10px">Advance amount received in Rs. <span><u>{{invoiceData.amount}}</u></span> against.</p>
+            <p>Receipt Voucher No. <span><u>{{invoiceData.purchaseOrderNumber}}</u></span>.</p>
+            </div>
+            <div class="row" style="border-top: 1px solid;margin-top: -15px;">
+                <div class="col-9" style="border-right: 1px solid;">
+                    <p style="border-bottom: 1px solid;">Bank Name : </p>
+                    <p style="border-bottom: 1px solid;">Bank A/c:</p>
+                    <p style="border-bottom: 1px solid;">Bank IFSC:</p>
+                    <h6>Terms & Conditions</h6>
+                    <p >1. Seller is not responsible for any loss or damage of goods in transit. </p>
+                    <p style="margin-top: -20px;">2. Please store products away from sunlight.</p>
+                    <p style="margin-top: -20px;">3.The scheme products,if any,cannot be returned or exchanged.</p>
+                    <p style="margin-top: -20px;">4.Any inaccuracy in this bill must be notified immediately on its receipt.</p>
+                    <p style="margin-top: -20px;">5. Disputes if any will be subject to Panchkula court jurisdiction. </p>
+                </div>
+                <div class="col-3">
+                   <p style="margin-top: 160px;text-align: center;font-weight: bold;">Common Seal</p> 
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <p style="border-bottom: 1px solid;">Certified that the particulars given above are true and correct</p>
+            <h6 style="text-align: center;">For {{invoiceData.vendorName}}</h6>
+            <p style="margin-top: 130px;text-align: center;">Authorised Signatory</p>
+        </div>
+    </div>
+    <div class="row" style="border-bottom: 1px solid;height: 20px;">
+        <div class="col-3">
+            <p>Registered Office</p>
+        </div>
+        <div class="col-9">
+            <p>PLOT NO 211, HSIIDC, INDUSTRIAL ESTATE, ALIPUR, BARWALA-134118</p>
+        </div>
+    </div>
+    <div class="row" style="height: 20px;">
+        <div class="col-3">
+            <p>Corporate Office</p>
+        </div>
+        <div class="col-9">
+            <p>2nd Floor, Plot No. 293, Phase1, Industrial Area, Panchkula-134112 (Haryana)</p>
+        </div>
+    </div>
+
+</div>
+<div style="text-align: center;" >
+  <button  class="btn btn-prod-pri" style="min-width: 144px;display: inline;margin-top: 20px;" (click)="exportHtmlToPDF()" >Download PDF</button>
+</div>

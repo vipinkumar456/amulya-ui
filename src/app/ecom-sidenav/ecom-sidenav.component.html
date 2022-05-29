@@ -1,0 +1,8 @@
+<div class="shopping-nav-bar" *ngIf="showShopping" >
+     <ul>
+        <li style="font-size: 16px;"  class="cursor-pointer" [routerLink]="['/shopping']">All Categories</li>
+        <li *ngFor="let doc of this.categories" [routerLink]="['/shopping',doc.id,doc.categoryName]">
+            <span class="label cursor-pointer">{{doc.categoryName}}</span> 
+        </li>
+     </ul>
+</div> 
